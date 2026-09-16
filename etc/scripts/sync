@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+SYNC_TARGET="web"
+SYNC_PATH="/home/web/www"
+LOCAL_BACKUPS="${PROJECT_DIR}/backups/remote"
+load_sync_env() {
+  local env_file="${PROJECT_DIR}/.env"
+  [[ -f "$env_file" ]] || return 0
+  local key value
+  while IFS='=' read -r key value; do
+    key="${key%%[[:space:]]*}"
+    value="${value%%#*}"
+    value="${value%"${value##*[![:space:]]}"}"
+    value="${value#\"}"; value="${value%\"}"; value="${value#\'}"; value="${value%\'}"
+    case "$key" in
+      SYNC_TARGET) [[ -n "$value" ]] && SYNC_TARGET="$value" ;;
+      SYNC_PATH) [[ -n "$value" ]] && SYNC_PATH="$value" ;;
+      LOCAL_BACKUPS) [[ -n "$value" ]] && LOCAL_BACKUPS="$value" ;;
+    esac
+  done < "$env_file"
+}
+load_sync_env
+for executable in rsync ssh; do
+  command -v "$executable" >/dev/null || { echo "Falta ${executable}."; exit 1; }
+done
+REMOTE_ROOT="$(ssh "$SYNC_TARGET" "cd '${SYNC_PATH}/api' && node --input-type=module -e \"import dotenv from 'dotenv'; import path from 'node:path'; dotenv.config({path:'../.env',quiet:true}); console.log(path.resolve(process.env.BACKUP_ROOT || '/home/web/www/backups'));\"")"
+[[ "$REMOTE_ROOT" =~ ^/[a-zA-Z0-9_./-]+$ && "$REMOTE_ROOT" != "/" ]] || { echo 'Ruta remota de respaldos inválida.'; exit 1; }
+ssh "$SYNC_TARGET" "test -d '${REMOTE_ROOT}'"
+mkdir -p "$LOCAL_BACKUPS"
+# No --delete: preserve local history even after remote six-month retention.
+# Backup folders are published atomically; never copy in-progress folders.
+rsync -az --exclude '/.*' "${SYNC_TARGET}:${REMOTE_ROOT}/" "${LOCAL_BACKUPS}/"
+DIFFERENCES="$(rsync -acni --exclude '/.*' "${SYNC_TARGET}:${REMOTE_ROOT}/" "${LOCAL_BACKUPS}/")"
+[[ -z "$DIFFERENCES" ]] || { echo 'La verificación detectó cambios o archivos incompletos; ejecuta sync nuevamente.'; exit 1; }
+echo "Respaldos SQL y archivos descargados y verificados en ${LOCAL_BACKUPS}"

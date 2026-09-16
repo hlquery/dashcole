@@ -1,0 +1,33 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-colegio}
+      MYSQL_USER: ${MYSQL_USER:-colegio}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-colegio}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-dashcole-root}
+    ports:
+      - "${MYSQL_DOCKER_PORT:-3307}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-dashcole-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  mysql_data:
+  redis_data:

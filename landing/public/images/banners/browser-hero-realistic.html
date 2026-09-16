@@ -1,0 +1,540 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 2400px;
+        height: 1500px;
+        background: transparent;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        color: #101828;
+      }
+      .stage {
+        position: relative;
+        width: 2400px;
+        height: 1500px;
+        overflow: hidden;
+      }
+      .browser {
+        position: absolute;
+        left: 470px;
+        top: 58px;
+        width: 1740px;
+        height: 1128px;
+        border: 1.5px solid #c9d4e2;
+        border-radius: 32px;
+        background: #fff;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.95);
+        overflow: hidden;
+      }
+      .browser:before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.75), inset 0 -24px 60px rgba(15,23,42,.035);
+        z-index: 2;
+      }
+      .chrome {
+        height: 92px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdff 48%, #f5f8fc 100%);
+        border-bottom: 1px solid #dfe7f1;
+        display: flex;
+        align-items: center;
+        padding: 0 40px;
+        gap: 24px;
+      }
+      .dots { display: flex; gap: 14px; margin-right: 42px; }
+      .dot { width: 15px; height: 15px; border-radius: 50%; }
+      .red { background: #ff5f57; } .yellow { background: #ffbd2e; } .green { background: #28c840; }
+      .navicons { display: flex; gap: 28px; color: #7b8493; font-size: 30px; line-height: 1; }
+      .address {
+        margin-left: 10px;
+        width: 780px;
+        height: 52px;
+        border: 0;
+        border-radius: 10px;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 850;
+        color: #242b36;
+        box-shadow: none;
+      }
+      .lock {
+        width: 13px;
+        height: 12px;
+        border-radius: 2px;
+        background: #4b5563;
+        position: relative;
+      }
+      .lock:before {
+        content: "";
+        position: absolute;
+        left: 2px;
+        top: -10px;
+        width: 9px;
+        height: 11px;
+        border: 2px solid #4b5563;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+      }
+      .chrome-actions { display: none; }
+      .chrome-actions span { width: 26px; height: 26px; position: relative; display: inline-block; }
+      .share:before { content:""; position:absolute; left:8px; top:9px; width:10px; height:13px; border:2px solid currentColor; border-top:0; border-radius:0 0 3px 3px; }
+      .share:after { content:""; position:absolute; left:8px; top:2px; width:10px; height:10px; border-left:2px solid currentColor; border-top:2px solid currentColor; transform:rotate(45deg); }
+      .plus:before, .plus:after { content:""; position:absolute; background:currentColor; border-radius:2px; }
+      .plus:before { left:12px; top:4px; width:2px; height:18px; }
+      .plus:after { left:4px; top:12px; width:18px; height:2px; }
+      .tabs:before { content:""; position:absolute; left:5px; top:7px; width:13px; height:13px; border:2px solid currentColor; border-radius:3px; }
+      .tabs:after { content:""; position:absolute; left:10px; top:4px; width:13px; height:13px; border:2px solid currentColor; border-radius:3px; background:#fff; }
+      .topnav {
+        display: none;
+        height: 0;
+        align-items: center;
+        gap: 72px;
+        padding: 0 42px;
+        border-bottom: 1px solid #e5edf6;
+        background: linear-gradient(180deg, #fff, #fdfefe);
+        font-size: 20px;
+        font-weight: 760;
+      }
+      .logo {
+        width: 52px; height: 52px; border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #0f5bff);
+        color: #fff; display: grid; place-items: center; font-weight: 900; font-size: 26px;
+        margin-right: 22px;
+      }
+      .topspacer { flex: 1; }
+      .iconline { display: flex; gap: 28px; align-items: center; color: #0f172a; }
+      .navicon { width: 30px; height: 30px; position: relative; display: inline-block; }
+      .heartIcon:before {
+        content:""; position:absolute; left:6px; top:8px; width:17px; height:17px;
+        border-left:3px solid #0f172a; border-bottom:3px solid #0f172a; transform:rotate(-45deg); border-radius:0 0 0 6px;
+      }
+      .heartIcon:after {
+        content:""; position:absolute; left:8px; top:4px; width:9px; height:9px; border:3px solid #0f172a; border-right:0; border-bottom:0; border-radius:10px 0 0 0;
+        box-shadow: 9px 0 0 -3px #fff, 9px 0 0 0 #0f172a;
+      }
+      .cart { position: relative; }
+      .cart:before { content:""; position:absolute; left:4px; top:7px; width:18px; height:13px; border:3px solid #0f172a; border-top:0; transform:skewX(-12deg); }
+      .cart:after {
+        content: "2"; position: absolute; right: -10px; top: -12px;
+        width: 22px; height: 22px; border-radius: 50%; background: #0f5bff; color: #fff;
+        font-size: 13px; display: grid; place-items: center; font-weight: 900;
+      }
+      .cart i:before, .cart i:after { content:""; position:absolute; bottom:0; width:5px; height:5px; border-radius:50%; background:#0f172a; }
+      .cart i:before { left:7px; } .cart i:after { left:22px; }
+      .userIcon:before { content:""; position:absolute; left:9px; top:4px; width:12px; height:12px; border:3px solid #0f172a; border-radius:50%; }
+      .userIcon:after { content:""; position:absolute; left:4px; bottom:3px; width:22px; height:12px; border:3px solid #0f172a; border-bottom:0; border-radius:18px 18px 0 0; }
+      .content { display: grid; grid-template-columns: 310px 1fr; height: calc(100% - 92px); }
+      .filters {
+        border-right: 1px solid #e2e8f0;
+        padding: 48px 36px;
+        font-size: 16px;
+      }
+      h3 { margin: 0 0 34px; font-size: 24px; }
+      .filter-title { margin: 28px 0 16px; font-weight: 800; font-size: 16px; }
+      .check, .brand { display: flex; align-items: center; gap: 12px; margin: 13px 0; }
+      .box { width: 20px; height: 20px; border: 2px solid #94a3b8; border-radius: 4px; }
+      .box.on { background: #0f5bff; border-color: #0f5bff; position: relative; }
+      .box.on:after { content: "✓"; position: absolute; color: #fff; font-size: 14px; left: 3px; top: -2px; font-weight: 900; }
+      .range {
+        --range-start: 0%;
+        --range-end: 100%;
+        position: relative; height: 62px; margin-top: 14px;
+      }
+      .range:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 30px;
+        height: 7px;
+        border-radius: 9px;
+        background: linear-gradient(
+          to right,
+          #dbe3ee 0 var(--range-start),
+          #0f5bff var(--range-start) var(--range-end),
+          #dbe3ee var(--range-end) 100%
+        );
+      }
+      .knob { position: absolute; top: 21px; width: 24px; height: 24px; border-radius: 50%; background: #0f5bff; box-shadow: 0 1px 4px rgba(15, 91, 255, .35); }
+      .knob.left { left: 0; } .knob.right { right: 0; }
+      .link { color: #0f5bff; font-weight: 700; margin-top: 16px; }
+      .switch { width: 48px; height: 28px; border-radius: 14px; background: #0f5bff; position: relative; }
+      .switch:after { content:""; position:absolute; right:4px; top:4px; width:20px; height:20px; border-radius:50%; background:#fff; }
+      .switch.is-off { background: #cbd5e1; }
+      .switch.is-off:after { right: 24px; }
+      .main { padding: 24px 32px 28px; position: relative; }
+      .searchbar {
+        width: 860px; height: 56px; border: 0; border-radius: 13px;
+        display: flex; align-items: center; padding: 0 26px; gap: 18px;
+        font-size: 25px; color: #111827; background: #f1f5f9; box-shadow: none;
+      }
+      .magnify { width: 20px; height: 20px; border: 2.4px solid #475569; border-radius: 50%; position: relative; flex: none; }
+      .magnify:after { content:""; position:absolute; width:12px; height:2.4px; background:#475569; transform:rotate(45deg); right:-9px; bottom:-5px; border-radius:2px; }
+      .close { margin-left: auto; font-size: 30px; color: #334155; font-weight: 300; }
+      .suggestions {
+        position: absolute; left: 40px; top: 100px; width: 860px;
+        border: 1px solid #dce5ef; border-radius: 14px; background: rgba(255,255,255,.985);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 18px 44px rgba(15, 23, 42, .14), 0 1px 0 rgba(255,255,255,.8) inset;
+        padding: 18px 0; z-index: 5;
+        display: none;
+      }
+      .suggestion {
+        height: 42px; display: flex; align-items: center; gap: 18px;
+        padding: 0 28px; font-size: 18px; font-weight: 560; color: #111827;
+      }
+      .sicon { width: 24px; height: 24px; position: relative; color: #334155; flex: none; }
+      .sicon.bag:before { content:""; position:absolute; left:3px; top:8px; width:18px; height:13px; border:2px solid currentColor; border-radius:4px; }
+      .sicon.bag:after { content:""; position:absolute; left:7px; top:2px; width:10px; height:11px; border:2px solid currentColor; border-bottom:0; border-radius:8px 8px 0 0; }
+      .sicon.head:before { content:""; position:absolute; left:2px; top:1px; width:20px; height:18px; border:2px solid currentColor; border-bottom:0; border-radius:16px 16px 0 0; }
+      .sicon.head:after { content:""; position:absolute; left:0; top:12px; width:6px; height:10px; border:2px solid currentColor; border-radius:3px; box-shadow:18px 0 0 -2px #fff, 18px 0 0 0 currentColor; }
+      .sicon.bt:before { content:"ᛒ"; position:absolute; left:2px; top:-8px; font-size:34px; line-height:1; font-weight:300; }
+      .result-head { margin-top: 8px; display:flex; align-items:flex-start; }
+      .result-title { font-size: 28px; font-weight: 880; margin: 0 0 5px; }
+      .sub { font-size: 17px; color: #475569; margin: 2px 0; }
+      .sub b { color: #0f5bff; }
+      .sort { margin-left:auto; display:flex; align-items:center; gap:16px; font-size:17px; color:#344054; padding-top:12px; }
+      .select {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #b8c2cf;
+        border-radius: 11px;
+        padding: 14px 18px;
+        color: #1f2937;
+        background: linear-gradient(180deg, #ffffff 0%, #eef1f5 48%, #d9dee6 100%);
+        min-width: 142px;
+        text-align: center;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.95),
+          inset 0 -1px 0 rgba(100,116,139,.12),
+          0 3px 7px rgba(15,23,42,.08);
+      }
+      .chips { margin: 12px 0; display:flex; gap:14px; align-items:center; }
+      .chip { height:42px; padding:0 24px; border:1px solid #dce5ef; border-radius:12px; display:flex; align-items:center; gap:8px; font-size:15px; background:#fff; }
+      .chip.toggle:after { content:""; width:42px; height:22px; border-radius:14px; background:#0f5bff; box-shadow: inset 20px 0 0 #fff; margin-left:4px; }
+      .chip.toggle.is-off:after { background:#cbd5e1; box-shadow: inset -20px 0 0 #fff; }
+      .grid { display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:14px 18px; }
+      .product {
+        border: 1px solid #dce5ef; border-radius: 16px; padding: 13px 14px 12px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,251,255,.92)),
+          radial-gradient(circle at 30% 8%, rgba(15,91,255,.045), transparent 38%);
+        min-height: 310px; position: relative;
+        box-shadow: 0 14px 30px rgba(15,23,42,.055), inset 0 1px 0 rgba(255,255,255,.92);
+      }
+      .heart { position:absolute; right:22px; top:22px; font-size:28px; color:#334155; }
+      .photo {
+        height:100px; display:grid; place-items:center; margin-bottom:10px;
+        background:
+          radial-gradient(ellipse at 50% 82%, rgba(15,23,42,.16), transparent 42%),
+          linear-gradient(180deg, #f8fbff, #eef5ff);
+        border-radius: 18px;
+      }
+      .productPhoto {
+        width: 104px;
+        height: 104px;
+        object-fit: contain;
+        filter: drop-shadow(0 24px 18px rgba(15,23,42,.20));
+        transform: translateY(4px);
+      }
+      .product:nth-child(5) .photo { background: linear-gradient(145deg, #eff6ff, #dbeafe); }
+      .product:nth-child(6) .photo { background: linear-gradient(145deg, #eff6ff, #dbeafe); }
+      .product:nth-child(7) .photo { background: linear-gradient(145deg, #f0fdfa, #ccfbf1); }
+      .product:nth-child(8) .photo { background: linear-gradient(145deg, #fff7ed, #ffedd5); }
+      .product:nth-child(5) .productPhoto { filter: hue-rotate(34deg) saturate(1.2) drop-shadow(0 24px 18px rgba(15,23,42,.20)); }
+      .product:nth-child(6) .productPhoto { filter: hue-rotate(148deg) saturate(1.25) drop-shadow(0 24px 18px rgba(15,23,42,.20)); }
+      .product:nth-child(7) .productPhoto { filter: sepia(.3) hue-rotate(82deg) saturate(1.35) drop-shadow(0 24px 18px rgba(15,23,42,.20)); }
+      .product:nth-child(8) .productPhoto { filter: sepia(.28) hue-rotate(308deg) saturate(1.45) drop-shadow(0 24px 18px rgba(15,23,42,.20)); }
+      body.tv .productPhoto,
+      body.pc .productPhoto { display: none; }
+      body.tv .photo::before,
+      body.pc .photo::before {
+        content: "";
+        width: 112px;
+        height: 64px;
+        border: 5px solid #111827;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #082f49 0%, #2563eb 48%, #22d3ee 100%);
+        box-shadow: 0 22px 28px rgba(15, 23, 42, .24), inset 0 0 0 2px rgba(255,255,255,.14);
+      }
+      body.tv .photo::after,
+      body.pc .photo::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 14px;
+        margin-top: 77px;
+        border-top: 5px solid #334155;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+      }
+      body.tv .product:nth-child(2) .photo::before { background: linear-gradient(135deg, #172554, #2563eb 52%, #38bdf8); }
+      body.tv .product:nth-child(3) .photo::before { background: linear-gradient(135deg, #052e16, #059669 52%, #a3e635); }
+      body.tv .product:nth-child(4) .photo::before { background: linear-gradient(135deg, #1c1917, #ea580c 54%, #facc15); }
+      body.tv .product:nth-child(5) .photo::before { background: linear-gradient(135deg, #172554, #0284c7 52%, #67e8f9); }
+      body.tv .product:nth-child(6) .photo::before { background: linear-gradient(135deg, #3f0d12, #be123c 52%, #fb7185); }
+      body.tv .product:nth-child(7) .photo::before { background: linear-gradient(135deg, #172554, #1d4ed8 52%, #93c5fd); }
+      body.tv .product:nth-child(8) .photo::before { background: linear-gradient(135deg, #052e16, #16a34a 52%, #bef264); }
+      body.pc .photo::before { width: 102px; height: 62px; background: linear-gradient(135deg, #111827, #2563eb 55%, #38bdf8); }
+      body.pc .product:nth-child(2) .photo::before { background: linear-gradient(135deg, #1c1917, #dc2626 52%, #fb923c); }
+      body.pc .product:nth-child(3) .photo::before { background: linear-gradient(135deg, #172554, #2563eb 52%, #60a5fa); }
+      body.pc .product:nth-child(4) .photo::before { background: linear-gradient(135deg, #052e16, #047857 52%, #34d399); }
+      body.pc .product:nth-child(5) .photo::before { background: linear-gradient(135deg, #172554, #0284c7 52%, #67e8f9); }
+      body.pc .product:nth-child(6) .photo::before { background: linear-gradient(135deg, #450a0a, #dc2626 52%, #fbbf24); }
+      body.pc .product:nth-child(7) .photo::before { background: linear-gradient(135deg, #082f49, #0369a1 52%, #7dd3fc); }
+      body.pc .product:nth-child(8) .photo::before { background: linear-gradient(135deg, #022c22, #059669 52%, #6ee7b7); }
+      .hp { width:150px; height:150px; position:relative; filter: drop-shadow(0 22px 18px rgba(15,23,42,.18)); transform: translateY(4px); }
+      .band {
+        position:absolute; left:31px; top:0; width:90px; height:116px;
+        border:22px solid #111827; border-bottom:0; border-radius:72px 72px 0 0;
+        box-shadow: inset 0 4px 10px rgba(255,255,255,.15);
+      }
+      .band:after {
+        content:""; position:absolute; left:7px; right:7px; top:12px; height:18px;
+        border-radius:18px; background:rgba(255,255,255,.08);
+      }
+      .cup {
+        position:absolute; top:84px; width:60px; height:76px; border-radius:36px;
+        background: radial-gradient(circle at 36% 28%, #2e3746 0 16%, #111827 52%, #05070a 100%);
+        box-shadow: inset -8px -10px 18px rgba(0,0,0,.35), inset 6px 6px 12px rgba(255,255,255,.08);
+      }
+      .cup.l { left:16px; }
+      .cup.r { right:16px; background: radial-gradient(circle at 36% 28%, #232936 0 16%, #0b0d11 58%, #020304 100%); }
+      .hp.blue .band { border-color:#1f3b60; }
+      .hp.blue .cup { background: radial-gradient(circle at 36% 28%, #37577f 0 16%, #183151 55%, #0c1c31 100%); }
+      .hp.blue .cup.r { background: radial-gradient(circle at 36% 28%, #42658f 0 16%, #27496f 58%, #142840 100%); }
+      .hp.silver .band { border-color:#e2e8f0; }
+      .hp.silver .cup { background: radial-gradient(circle at 36% 28%, #fff 0 16%, #eef2f7 56%, #cbd5e1 100%); border:1px solid #cbd5e1; }
+      .hp.silver .cup.r { background: radial-gradient(circle at 36% 28%, #fff 0 16%, #e5e9ef 58%, #cbd2dc 100%); }
+      .productTitle { color:#101828; font-size:17px; line-height:1.18; font-weight:880; letter-spacing:0; }
+      .brandname { color:#475569; margin-top:4px; font-size:13px; }
+      .stars { color:#0f5bff; letter-spacing:1px; font-size:20px; margin-top:14px; }
+      .stock { display:inline-flex; margin-top:8px; padding:5px 10px; border-radius:8px; background:#dcfce7; color:#15803d; font-weight:800; font-size:13px; border:1px solid #b7efc5; }
+      .resultIcon {
+        width: 116px;
+        height: 116px;
+        border-radius: 26px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 44px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #0f5bff, #0891b2);
+        box-shadow: 0 22px 34px rgba(15, 91, 255, .24), inset 0 1px 0 rgba(255,255,255,.28);
+      }
+      .resultIcon.dark { background: linear-gradient(135deg, #0f172a, #334155); box-shadow: 0 22px 34px rgba(15,23,42,.24), inset 0 1px 0 rgba(255,255,255,.16); }
+      .resultIcon.teal { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+      .resultIcon.blue { background: linear-gradient(135deg, #0284c7, #2563eb); }
+      .snippet {
+        margin-top: 7px;
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.32;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .score {
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #0f5bff;
+        font-size: 13px;
+        font-weight: 850;
+      }
+      .scorebar {
+        flex: 1;
+        height: 5px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+      }
+      .scorebar span { display:block; height:100%; border-radius:inherit; background: linear-gradient(90deg, #0f5bff, #14b8a6); }
+      .mini {
+        position: absolute; left: 80px; top: 310px; width: 390px; height: 920px;
+        border: 1.5px solid #d2dce8; border-radius: 28px; background: #fff;
+        box-shadow: 0 34px 80px rgba(15, 23, 42, .18), 0 8px 22px rgba(15, 23, 42, .10), inset 0 1px 0 rgba(255,255,255,.95);
+        padding: 42px 36px;
+        display: none;
+      }
+      .mini .dots { margin: 0 0 42px; }
+      .mini h2 { margin: 0 0 28px; font-size: 26px; }
+      .mini label { display:block; margin: 22px 0 10px; font-size: 15px; font-weight: 850; }
+      .input { height:52px; border:1px solid #dce5ef; border-radius:10px; display:flex; align-items:center; padding:0 16px; gap:12px; color:#111827; font-size:16px; }
+      .bluebtn { height:56px; border-radius:10px; background:#0f5bff; display:grid; place-items:center; color:#fff; font-weight:850; margin-top:26px; font-size:18px; }
+      .mini .clear { position:absolute; bottom:34px; left:0; right:0; text-align:center; color:#0f5bff; font-size:17px; font-weight:850; }
+    </style>
+  </head>
+  <body>
+    <div class="stage" id="shot">
+      <div class="browser">
+        <div class="chrome">
+          <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+          <div class="navicons"><span>‹</span><span>›</span><span>↻</span></div>
+          <div class="address"><span class="lock"></span><span>dashboard.hlquery.com</span></div>
+          <div class="chrome-actions"><span class="share"></span><span class="plus"></span><span class="tabs"></span></div>
+        </div>
+        <div class="topnav">
+          <div class="logo">u</div>
+          <span>Collections⌄</span><span>Indexing</span><span>Relevance</span><span>API Docs</span><span>Metrics</span>
+          <div class="topspacer"></div><div class="iconline"><span class="navicon heartIcon"></span><span class="navicon cart"><i></i></span><span class="navicon userIcon"></span></div>
+        </div>
+        <div class="content">
+          <aside class="filters">
+            <h3>Search Controls</h3>
+            <div class="filter-title">Collections</div>
+            <div class="check"><span class="box on"></span><span>All collections</span></div>
+            <div class="check"><span class="box"></span><span>Products</span></div>
+            <div class="check"><span class="box"></span><span>Docs</span></div>
+            <div class="check"><span class="box"></span><span>Support tickets</span></div>
+            <div class="filter-title">Ranking</div>
+            <div class="brand"><span class="box on"></span><span>Lexical</span></div>
+            <div class="brand"><span class="box"></span><span>Vector</span></div>
+            <div class="brand"><span class="box"></span><span>Hybrid</span></div>
+            <div class="brand"><span class="box"></span><span>Synonyms</span></div>
+            <div class="brand"><span class="box"></span><span>Stopwords</span></div>
+            <div class="link">Show more</div>
+            <div class="filter-title">Score threshold</div>
+            <div class="range"><span class="knob left"></span><span class="knob right"></span></div>
+            <div class="filter-title">Hybrid mode</div>
+            <div class="check"><span class="switch"></span><span>Lexical + vector</span></div>
+            <div class="filter-title">Latency</div>
+            <div class="stars">24ms <span style="color:#475569;font-size:16px">p95</span></div>
+          </aside>
+          <main class="main">
+            <div class="searchbar"><span class="magnify"></span><span>wireless headphones</span><span class="close">×</span></div>
+            <div class="suggestions">
+              <div class="suggestion"><span class="sicon head"></span><span>wireless noise cancelling headphones</span></div>
+              <div class="suggestion"><span class="sicon bag"></span><span>bluetooth headphones under $200</span></div>
+              <div class="suggestion"><span class="sicon bt"></span><span>hybrid search across product catalog</span></div>
+            </div>
+            <div class="result-head">
+              <div><h1 class="result-title">dashcole Search API</h1><p class="sub">Searching <b>1.2M product documents</b> with live ranking signals</p><p class="sub">Hybrid retrieval · facets · synonyms · REST clients</p></div>
+              <div class="sort"><span>Sort by</span><span class="select">Relevance</span></div>
+            </div>
+            <div class="chips"><span class="chip">Smart facets</span><span class="chip">Intent: compare</span><span class="chip">Stock: live</span><span class="chip toggle">Hybrid AI</span><span class="chip">Explain ranking</span></div>
+            <div class="grid">
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-0.png" alt=""></div><div class="productTitle">AeroMax Wireless Pro</div><div class="brandname">Products catalog · headphones</div><div class="snippet">Matched by exact query, synonyms, and product description vectors.</div><div class="score">score 0.98 <span class="scorebar"><span style="width:98%"></span></span></div><span class="stock">24ms p95</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-1.png" alt=""></div><div class="productTitle">BlueWave ANC Studio</div><div class="brandname">Products catalog · audio</div><div class="snippet">Hybrid retrieval ranks color, category, reviews, and availability.</div><div class="score">score 0.94 <span class="scorebar"><span style="width:94%"></span></span></div><span class="stock">Live sync</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-2.png" alt=""></div><div class="productTitle">CloudLite Over-Ear</div><div class="brandname">Products catalog · wireless</div><div class="snippet">Facet filters and lexical ranking keep ecommerce results precise.</div><div class="score">score 0.91 <span class="scorebar"><span style="width:91%"></span></span></div><span class="stock">Vector ready</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-3.png" alt=""></div><div class="productTitle">Graphite Pulse X</div><div class="brandname">Products catalog · premium</div><div class="snippet">Ranking controls boost relevant products without hiding scores.</div><div class="score">score 0.88 <span class="scorebar"><span style="width:88%"></span></span></div><span class="stock">Tunable</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-1.png" alt=""></div><div class="productTitle">SonicArc Travel ANC</div><div class="brandname">Products catalog · travel</div><div class="snippet">Noise cancellation and comfort signals improve result quality.</div><div class="score">score 0.86 <span class="scorebar"><span style="width:86%"></span></span></div><span class="stock">Low latency</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-2.png" alt=""></div><div class="productTitle">PulseFit Wireless</div><div class="brandname">Products catalog · fitness</div><div class="snippet">Filters combine availability, fit, and wireless performance.</div><div class="score">score 0.84 <span class="scorebar"><span style="width:84%"></span></span></div><span class="stock">In stock</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-0.png" alt=""></div><div class="productTitle">StudioOne Reference</div><div class="brandname">Products catalog · studio</div><div class="snippet">Weighted fields surface precise audio and studio matches.</div><div class="score">score 0.82 <span class="scorebar"><span style="width:82%"></span></span></div><span class="stock">Ranked</span></div>
+              <div class="product"><div class="photo"><img class="productPhoto" src="products/headphone-3.png" alt=""></div><div class="productTitle">Everyday Sound Max</div><div class="brandname">Products catalog · everyday</div><div class="snippet">Synonyms match common shopping language to product metadata.</div><div class="score">score 0.80 <span class="scorebar"><span style="width:80%"></span></span></div><span class="stock">Synonym hit</span></div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div class="mini">
+        <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+        <h2>Search API</h2>
+        <label>Query</label><div class="input"><span class="magnify"></span><span>hybrid search</span></div>
+        <label>Collection</label><div class="input">Products + docs <span style="margin-left:auto">⌄</span></div>
+        <label>Score threshold</label><div style="display:flex;gap:16px"><div class="input" style="width:132px">0.70</div><div class="input" style="width:132px">1.00</div></div><div class="range"><span class="knob left"></span><span class="knob right"></span></div>
+        <label>Sort by</label><div class="input">Relevance <span style="margin-left:auto">⌄</span></div>
+        <label>Hybrid mode</label><div class="switch" style="position:absolute;right:36px;top:670px"></div>
+        <label>Ranking tools</label><div class="input">Synonyms + vectors <span style="margin-left:auto">⌄</span></div>
+        <div class="bluebtn">Run Search</div><div class="clear">View API docs</div>
+      </div>
+      <script>
+        if (new URLSearchParams(window.location.search).get('variant') === 'tv') {
+          document.body.classList.add('tv')
+          document.querySelector('.searchbar span:nth-child(2)').textContent = '4K smart TVs'
+          const collectionBoxes = document.querySelectorAll('.filters .check .box')
+          collectionBoxes.forEach((box) => box.classList.remove('on'))
+          collectionBoxes[1]?.classList.add('on')
+          collectionBoxes[3]?.classList.add('on')
+          const rankingBoxes = document.querySelectorAll('.filters .brand .box')
+          rankingBoxes.forEach((box) => box.classList.remove('on'))
+          rankingBoxes[1]?.classList.add('on')
+          const scoreRange = document.querySelector('.filters .range')
+          scoreRange.style.setProperty('--range-start', '34%')
+          scoreRange.style.setProperty('--range-end', '90%')
+          scoreRange.querySelector('.knob.left').style.left = '34%'
+          scoreRange.querySelector('.knob.right').style.right = '10%'
+          document.querySelector('.filters .switch').classList.add('is-off')
+          document.querySelector('.filters .switch').nextElementSibling.textContent = 'Hybrid off'
+          document.querySelector('.chip.toggle').classList.add('is-off')
+          const tvChips = ['Display: OLED', 'Size: 55–65 in', 'Stock: live', 'Vector mode', 'Fast delivery']
+          document.querySelectorAll('.chip').forEach((chip, index) => {
+            chip.textContent = tvChips[index]
+          })
+          document.querySelector('.sort .select').textContent = 'Vector score'
+          const products = [
+            ['NovaView OLED 55', 'TV catalog · OLED', 'Deep blacks, cinematic color, and low-latency gaming modes.', 'score 0.99', 'Top match'],
+            ['VisionPro Mini LED', 'TV catalog · premium', 'High brightness and precise local dimming for bright rooms.', 'score 0.96', 'In stock'],
+            ['Evergreen QLED 65', 'TV catalog · smart TV', 'Vivid quantum-dot color with built-in streaming apps.', 'score 0.93', 'Fast delivery'],
+            ['Sunset 4K Cinema', 'TV catalog · entertainment', 'Immersive 4K picture with voice control and HDR support.', 'score 0.90', 'Great value'],
+            ['LumaCore OLED 48', 'TV catalog · compact', 'Compact OLED display with rich contrast and responsive gaming.', 'score 0.88', 'Low latency'],
+            ['MetroView QLED', 'TV catalog · living room', 'Bright QLED color tuned for sports, movies, and streaming.', 'score 0.86', 'Popular'],
+            ['CinemaMax Mini LED', 'TV catalog · cinema', 'Precise backlighting brings detailed HDR scenes into focus.', 'score 0.84', 'HDR ready'],
+            ['StreamLine 4K', 'TV catalog · streaming', 'Fast apps and voice search make everyday viewing simple.', 'score 0.82', 'In stock']
+          ]
+          document.querySelectorAll('.product').forEach((card, index) => {
+            const product = products[index]
+            card.querySelector('.productTitle').textContent = product[0]
+            card.querySelector('.brandname').textContent = product[1]
+            card.querySelector('.snippet').textContent = product[2]
+            card.querySelector('.score').childNodes[0].textContent = product[3] + ' '
+            card.querySelector('.stock').textContent = product[4]
+          })
+        }
+        if (new URLSearchParams(window.location.search).get('variant') === 'pc') {
+          document.body.classList.add('pc')
+          document.querySelector('.searchbar span:nth-child(2)').textContent = 'desktop PCs Intel AMD'
+          const products = [
+            ['CoreStation Intel i7', 'Desktop PCs · Intel', 'Fast productivity desktop tuned for development and creative work.', 'score 0.99', 'Synonym match'],
+            ['RyzenForge AMD R7', 'Desktop PCs · AMD', 'High-core performance for compiling, streaming, and multitasking.', 'score 0.97', 'Top AMD'],
+            ['PixelTower Intel i5', 'Desktop PCs · compact', 'Quiet compact tower with efficient everyday performance.', 'score 0.94', 'In stock'],
+            ['ThreadBox AMD Pro', 'Desktop PCs · workstation', 'Expandable workstation built for demanding professional workloads.', 'score 0.92', 'Vector ready'],
+            ['DevBox Intel i9', 'Desktop PCs · developer', 'High clock speeds for builds, local services, and test suites.', 'score 0.90', 'Fast build'],
+            ['RenderForge AMD R9', 'Desktop PCs · rendering', 'Parallel performance for 3D, video, and production workloads.', 'score 0.88', 'Creator pick'],
+            ['MiniCore Intel i3', 'Desktop PCs · mini', 'A compact desktop for focused office and everyday tasks.', 'score 0.86', 'Compact'],
+            ['AtlasTower AMD', 'Desktop PCs · expandable', 'Flexible storage and memory options for growing workloads.', 'score 0.84', 'Expandable']
+          ]
+          document.querySelectorAll('.product').forEach((card, index) => {
+            const product = products[index]
+            card.querySelector('.productTitle').textContent = product[0]
+            card.querySelector('.brandname').textContent = product[1]
+            card.querySelector('.snippet').textContent = product[2]
+            card.querySelector('.score').childNodes[0].textContent = product[3] + ' '
+            card.querySelector('.stock').textContent = product[4]
+          })
+          const rankingBoxes = document.querySelectorAll('.filters .brand .box')
+          rankingBoxes.forEach((box) => box.classList.remove('on'))
+          rankingBoxes[2]?.classList.add('on')
+          rankingBoxes[3]?.classList.add('on')
+          rankingBoxes[4]?.classList.add('on')
+          const pcChips = ['CPU: Intel + AMD', 'Use: workstation', 'Stock: live', 'Hybrid AI', 'Explain ranking']
+          document.querySelectorAll('.chip').forEach((chip, index) => {
+            chip.textContent = pcChips[index]
+          })
+          const scoreRange = document.querySelector('.filters .range')
+          scoreRange.style.setProperty('--range-start', '58%')
+          scoreRange.style.setProperty('--range-end', '100%')
+          scoreRange.querySelector('.knob.left').style.left = '58%'
+          scoreRange.querySelector('.knob.right').style.right = '0'
+          document.querySelector('.sort .select').textContent = 'Hybrid score'
+        }
+        if (new URLSearchParams(window.location.search).get('blank') === '1') {
+          document.querySelector('.searchbar span:nth-child(2)').textContent = ''
+        }
+      </script>
+    </div>
+  </body>
+</html>

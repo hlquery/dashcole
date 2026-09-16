@@ -1,0 +1,262 @@
+use sequelize.. el scirpt x4 deberia instalarlo
+- asegurate q las sql esten funcioandno entrando los datos, user colegio
+pass colegio host localhost
+
+Sí. Si quieres que **DashCole sea un ERP escolar completo**, no lo armes como páginas sueltas. Hazlo como una plataforma modular con un núcleo común.
+
+### Stack
+
+* **Frontend:** Vue 3 + TypeScript + Vite + Pinia + Vue Router
+* **Backend:** Node.js + TypeScript + NestJS
+* **DB:** MySQL
+* **Redis:** sesiones, cache, rate limiting, colas y notificaciones
+* **ORM:** Prisma
+* **Auth:** JWT + refresh tokens
+* **Archivos:** S3-compatible storage
+
+
+### Módulos principales
+
+1. **Administración**
+
+   * Colegios/sedes
+   * Año académico
+   * Cursos
+   * Asignaturas
+   * Profesores
+   * Alumnos
+   * Apoderados
+   * Usuarios y permisos
+
+2. **Libro de clases**
+
+   * Asistencia diaria
+   * Notas
+   * Evaluaciones
+   * Contenidos vistos
+   * Observaciones
+   * Atrasos
+   * Anotaciones positivas/negativas
+   * Firma/cierre de clase
+   * Historial auditable
+
+3. **Académico**
+
+   * Malla curricular
+   * Horarios
+   * Promedios
+   * Ponderaciones
+   * Promoción
+   * Riesgo académico
+   * Informes por alumno/curso/asignatura
+
+4. **Finanzas**
+
+   * Matrículas
+   * Mensualidades
+   * Aranceles
+   * Becas/descuentos
+   * Facturas/boletas
+   * Pagos
+   * Deudas
+   * Caja
+   * Gastos
+   * Proveedores
+   * Órdenes de compra
+   * Presupuesto anual
+   * Centros de costo
+   * Rendición de cuentas
+
+5. **Inventario**
+
+   * Productos/activos
+   * Stock
+   * Bodega
+   * Entradas/salidas
+   * Equipos entregados
+   * Activos por sala
+   * Mantenimiento
+   * Depreciación
+   * Responsable de cada activo
+
+6. **RRHH**
+
+   * Profesores
+   * Administrativos
+   * Contratos
+   * Horarios
+   * Ausencias
+   * Licencias
+   * Vacaciones
+   * Documentación
+
+7. **Convivencia escolar**
+
+   * Incidentes
+   * Protocolos
+   * Seguimientos
+   * Citaciones
+   * Compromisos
+   * Historial del estudiante
+
+8. **Comunicaciones**
+
+   * Notificaciones
+   * Email
+   * Comunicados
+   * Mensajes apoderado/colegio
+   * Calendario
+   * Reuniones
+   * Alertas automáticas
+
+9. **Documentos**
+
+   * Certificados
+   * Informes
+   * Matrículas
+   * Contratos
+   * PDFs
+   * Exportación Excel/PDF
+
+10. **Dashboard**
+
+* Matrícula total
+* Asistencia
+* Promedio
+* Morosidad
+* Ingresos/gastos
+* Stock crítico
+* Casos de convivencia
+* Profesores ausentes
+* KPIs del colegio
+
+### Modelo de datos central
+
+No dupliques alumnos, profesores o cursos entre módulos.
+
+```text
+School
+ ├─ Campus
+ ├─ AcademicYear
+ ├─ User
+ ├─ Student
+ │   ├─ Guardian
+ │   ├─ Enrollment
+ │   ├─ Attendance
+ │   ├─ Grade
+ │   ├─ Observation
+ │   └─ PaymentAccount
+ │
+ ├─ Employee
+ ├─ Course
+ ├─ Subject
+ ├─ ClassSession
+ ├─ Invoice
+ ├─ Payment
+ ├─ Expense
+ ├─ Supplier
+ ├─ InventoryItem
+ └─ AuditLog
+```
+
+Todas las tablas importantes deberían llevar:
+
+```text
+id
+school_id
+created_at
+updated_at
+created_by
+```
+
+Así puedes convertirlo después en **SaaS multi-colegio**.
+
+### Permisos
+
+Implementa RBAC desde el principio:
+
+```text
+SUPER_ADMIN
+SCHOOL_ADMIN
+DIRECTOR
+UTP
+FINANCE
+TEACHER
+INSPECTOR
+WAREHOUSE
+GUARDIAN
+STUDENT
+```
+
+Ejemplo:
+
+```text
+Teacher:
+  grades.read
+  grades.write
+  attendance.write
+
+Finance:
+  invoices.*
+  payments.*
+  expenses.*
+
+Director:
+  reports.*
+  dashboard.*
+```
+
+### Redis
+
+No guardes datos permanentes del colegio en Redis.
+
+Úsalo para:
+
+```text
+session:user:123
+permissions:user:123
+dashboard:school:10
+queue:emails
+queue:reports
+rate-limit
+notifications
+```
+
+MySQL sigue siendo la **fuente de verdad**.
+
+### Orden en que yo lo construiría
+
+**Fase 1:** Auth + colegios + usuarios + alumnos + cursos + profesores.
+
+**Fase 2:** Libro de clases + notas + asistencia + dashboard.
+
+**Fase 3:** Finanzas + pagos + gastos + rendiciones.
+
+**Fase 4:** Inventario + compras + proveedores.
+
+**Fase 5:** RRHH + convivencia + comunicaciones.
+
+**Fase 6:** BI/reportes + automatizaciones.
+
+Y una decisión importante: **haz un monolito modular, no microservicios**. Para este tamaño de producto, microservicios al inicio solo te agregarían complejidad.
+
+Tu objetivo arquitectónico debería ser algo como:
+
+```text
+Vue
+   ↓
+REST API
+   ↓
+NestJS
+ ├── Academic
+ ├── Classbook
+ ├── Finance
+ ├── Inventory
+ ├── HR
+ ├── Communications
+ └── Reports
+      ↓
+ MySQL + Redis
+```
+
+Eso sí puede terminar siendo un **sistema que administre prácticamente todo un colegio**, no solamente una plataforma de notas.

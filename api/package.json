@@ -1,0 +1,34 @@
+{
+  "name": "@dashcole/api",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "check": "node ../etc/scripts/check-api.mjs",
+    "db:bootstrap": "node src/bootstrap.js",
+    "db:reset": "node src/reset.js",
+    "db:seed": "node src/seed.js",
+    "db:faker": "node ../etc/scripts/faker.js",
+    "db:verify": "node src/verify.js",
+    "test:integration": "node --test test/todo.integration.mjs",
+    "test:unit": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "bcryptjs": "^3.0.3",
+    "bullmq": "^6.3.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "geoip-country": "^5.0.202609120131",
+    "ioredis": "^6.0.0",
+    "multer": "^2.3.0",
+    "mysql2": "^3.24.2",
+    "nodemailer": "^10.0.9",
+    "pdfkit": "^0.20.2",
+    "redis": "^6.2.1",
+    "sequelize": "^6.37.8",
+    "transbank-sdk": "^6.1.1"
+  }
+}

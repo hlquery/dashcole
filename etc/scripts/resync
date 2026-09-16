@@ -1,0 +1,256 @@
+#!/usr/bin/env bash
+# resync — actualizador de producción con respaldo previo y freno si el schema no cuadra.
+#
+# 1) Pide un backup completo en el remoto (SQL + uploads/archivos)
+# 2) Lo descarga y verifica en backups/remote
+# 3) Copia también el árbol de la app remota (sin node_modules/.env)
+# 4) Compara migraciones locales vs schema_migrations remoto → ERR si no cuadra
+# 5) Build + reinstala código en el servidor (como sync2), sin tocar datos
+#
+# Uso:
+#   ./etc/scripts/resync              # falla si hay migraciones pendientes/desconocidas
+#   ./etc/scripts/resync --check      # solo backup+verificación+schema, sin publicar
+#   ./etc/scripts/resync --migrate    # permite publicar aunque falten migraciones (el boot las aplica)
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+SYNC_TARGET="web"
+SYNC_PATH="/home/web/www"
+LOCAL_BACKUPS="${PROJECT_DIR}/backups/remote"
+SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=3)
+RSYNC_SSH="ssh -o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=3"
+remote() { ssh "${SSH_OPTIONS[@]}" "$SYNC_TARGET" "$@"; }
+
+load_sync_env() {
+  local env_file="${PROJECT_DIR}/.env"
+  [[ -f "$env_file" ]] || return 0
+  local key value
+  while IFS='=' read -r key value; do
+    key="${key%%[[:space:]]*}"
+    value="${value%%#*}"
+    value="${value%"${value##*[![:space:]]}"}"
+    value="${value#\"}"; value="${value%\"}"; value="${value#\'}"; value="${value%\'}"
+    case "$key" in
+      SYNC_TARGET) [[ -n "$value" ]] && SYNC_TARGET="$value" ;;
+      SYNC_PATH) [[ -n "$value" ]] && SYNC_PATH="$value" ;;
+      LOCAL_BACKUPS) [[ -n "$value" ]] && LOCAL_BACKUPS="$value" ;;
+    esac
+  done < "$env_file"
+}
+load_sync_env
+cd "${PROJECT_DIR}"
+
+CHECK_ONLY=false
+ALLOW_MIGRATE=false
+DEMO=false
+for arg in "$@"; do
+  case "$arg" in
+    --check) CHECK_ONLY=true ;;
+    --migrate) ALLOW_MIGRATE=true ;;
+    --demo) DEMO=true ;;
+    -h|--help)
+      echo 'Uso: resync [--check] [--migrate] [--demo]'
+      echo '  --check    backup + schema check, sin publicar'
+      echo '  --migrate  permite publicar si faltan migraciones en la base remota'
+      echo '  --demo     publica en modo solo lectura (archivo .demo)'
+      exit 0
+      ;;
+    *) echo "Uso: resync [--check] [--migrate] [--demo]"; exit 1 ;;
+  esac
+done
+
+for executable in rsync ssh node npm; do
+  command -v "$executable" >/dev/null || { echo "Falta ${executable}."; exit 1; }
+done
+
+echo '==> Comprobando configuración remota'
+REMOTE_ENV="$(remote "if test -f '${SYNC_PATH}/.env'; then echo exists; else echo missing; fi")"
+if [[ "$REMOTE_ENV" == missing ]]; then
+  echo 'ERR: no hay .env remoto. Usa sync2 para la primera instalación.'; exit 1
+elif [[ "$REMOTE_ENV" != exists ]]; then
+  echo 'No se pudo comprobar la configuración remota.'; exit 1
+fi
+remote "cat '${SYNC_PATH}/.env'" | node etc/scripts/check-production-env.mjs -
+remote "command -v node >/dev/null && command -v npm >/dev/null && command -v pm2 >/dev/null && command -v mysqldump >/dev/null" \
+  || { echo 'El servidor remoto requiere node, npm, pm2 y mysqldump.'; exit 1; }
+remote "test -f '${SYNC_PATH}/api/src/server.js'" \
+  || { echo 'ERR: no hay instalación remota previa. Usa sync2 para la primera publicación.'; exit 1; }
+
+echo '==> Pedindo backup completo en el remoto (SQL + archivos)'
+rsync -az -e "$RSYNC_SSH" api/src/backups.js "${SYNC_TARGET}:${SYNC_PATH}/api/src/.resync-backup.mjs"
+REMOTE_BACKUP="$(remote "cd '${SYNC_PATH}/api' && timeout 660 node --input-type=module -e \"import dotenv from 'dotenv'; dotenv.config({path:'../.env',quiet:true}); const {dumpDatabase}=await import('./src/.resync-backup.mjs'); console.log(await dumpDatabase());\"")"
+[[ "$REMOTE_BACKUP" =~ ^/[a-zA-Z0-9_./:-]+$ ]] || { echo 'Ruta de respaldo inválida; resync cancelado.'; exit 1; }
+BACKUP_NAME="${REMOTE_BACKUP##*/}"
+BACKUP_DIR="${LOCAL_BACKUPS}/${BACKUP_NAME}"
+mkdir -p "${BACKUP_DIR}"
+
+echo "==> Descargando backup a ${BACKUP_DIR}"
+rsync -az -e "$RSYNC_SSH" "${SYNC_TARGET}:${REMOTE_BACKUP}/" "${BACKUP_DIR}/"
+DIFFERENCES="$(rsync -acni -e "$RSYNC_SSH" "${SYNC_TARGET}:${REMOTE_BACKUP}/" "${BACKUP_DIR}/")"
+[[ -z "$DIFFERENCES" && -f "${BACKUP_DIR}/manifest.json" ]] || {
+  echo 'ERR: no se pudo verificar el respaldo local; resync cancelado.'
+  exit 1
+}
+remote "rm -f '${SYNC_PATH}/api/src/.resync-backup.mjs'"
+
+# Árbol de la app remota (código publicado + uploads locales si existen fuera del dump).
+echo '==> Descargando árbol remoto de la aplicación'
+mkdir -p "${BACKUP_DIR}/remote-app"
+rsync -az -e "$RSYNC_SSH" \
+  --exclude 'node_modules/' \
+  --exclude '.env' \
+  --exclude '.env.*' \
+  --exclude 'logs/' \
+  --exclude 'api/src/.resync-backup.mjs' \
+  --exclude 'api/src/.sync-backup.mjs' \
+  "${SYNC_TARGET}:${SYNC_PATH}/" "${BACKUP_DIR}/remote-app/"
+echo "Respaldo completo en ${BACKUP_DIR}"
+ls -lah "${BACKUP_DIR}" | sed -n '1,20p'
+if [[ -f "${BACKUP_DIR}/manifest.json" ]]; then
+  echo '--- manifest ---'
+  cat "${BACKUP_DIR}/manifest.json"
+  echo
+fi
+
+echo '==> Comprobando que el schema remoto cuadre con las migraciones locales'
+REMOTE_MIGRATION_IDS="$(remote "cd '${SYNC_PATH}/api' && node --input-type=module" <<'NODE'
+import dotenv from 'dotenv';
+import mysql from 'mysql2/promise';
+dotenv.config({ path: '../.env', quiet: true });
+
+async function idsFor({ host, port, user, password, database }) {
+  if (!database) return [];
+  const connection = await mysql.createConnection({
+    host: host || 'localhost',
+    port: Number(port || 3306),
+    user: user || 'dashcole',
+    password: password || '',
+    database,
+  });
+  try {
+    const [tables] = await connection.query(
+      "SELECT COUNT(*) AS c FROM information_schema.tables WHERE table_schema = ? AND table_name = 'schema_migrations'",
+      [database],
+    );
+    if (!Number(tables[0]?.c)) return [];
+    const [rows] = await connection.query('SELECT id FROM schema_migrations ORDER BY id');
+    return rows.map((row) => String(row.id));
+  } finally {
+    await connection.end();
+  }
+}
+
+const primary = await idsFor({
+  host: process.env.MYSQL_HOST,
+  port: process.env.MYSQL_PORT,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+});
+const controlName = String(process.env.CONTROL_MYSQL_DATABASE || '').trim();
+const control = controlName && controlName !== process.env.MYSQL_DATABASE
+  ? await idsFor({
+      host: process.env.CONTROL_MYSQL_HOST || process.env.MYSQL_HOST,
+      port: process.env.CONTROL_MYSQL_PORT || process.env.MYSQL_PORT,
+      user: process.env.CONTROL_MYSQL_USER || process.env.MYSQL_USER,
+      password: process.env.CONTROL_MYSQL_PASSWORD || process.env.MYSQL_PASSWORD,
+      database: controlName,
+    })
+  : [];
+
+const merged = [...new Set([...primary, ...control])].sort();
+process.stdout.write(`${merged.join('\n')}${merged.length ? '\n' : ''}`);
+NODE
+)"
+
+SCHEMA_STATUS=0
+printf '%s' "$REMOTE_MIGRATION_IDS" | node etc/scripts/check-schema-sync.mjs || SCHEMA_STATUS=$?
+if [[ "$SCHEMA_STATUS" -eq 2 ]]; then
+  if [[ "$ALLOW_MIGRATE" == true ]]; then
+    echo 'Aviso: schema no cuadra, pero --migrate está activo; se publicará y el boot aplicará migraciones.'
+  else
+    echo 'ERR: abortando resync porque la base de datos no cuadra con el código local.'
+    echo 'Si es intencional aplicar migraciones nuevas, vuelve a ejecutar con --migrate.'
+    echo "El backup ya quedó en ${BACKUP_DIR}"
+    exit 2
+  fi
+elif [[ "$SCHEMA_STATUS" -ne 0 ]]; then
+  echo 'ERR: falló la verificación de schema.'; exit "$SCHEMA_STATUS"
+fi
+
+if [[ "$CHECK_ONLY" == true ]]; then
+  echo 'Verificación completada (--check); no se publicaron cambios.'
+  echo "Backup: ${BACKUP_DIR}"
+  exit 0
+fi
+
+echo '==> Build web + landing + guias'
+(cd web && NODE_ENV=production VITE_API_URL=https://api.hlquery.com/api npm run build)
+(cd landing && \
+  NODE_ENV=production \
+  VITE_API_URL=https://api.hlquery.com/api \
+  VITE_API_DOMAIN=api.hlquery.com \
+  VITE_LOGIN_URL=https://dashboard.hlquery.com/login \
+  VITE_DASHBOARD_URL=https://dashboard.hlquery.com \
+  VITE_DASHBOARD_PATH=/ \
+  VITE_DASHBOARD_DOMAIN=dashboard.hlquery.com \
+  VITE_WEB_URL=https://www.hlquery.com \
+  VITE_WEB_DOMAIN=www.hlquery.com \
+  VITE_BASE_DOMAIN=hlquery.com \
+  npm run build)
+(cd guias && NODE_ENV=production VITE_API_URL=https://api.hlquery.com npm run build)
+
+echo '==> Reinstalando código en el remoto'
+remote "mkdir -p '${SYNC_PATH}/api/src' '${SYNC_PATH}/dashboard' '${SYNC_PATH}/web' '${SYNC_PATH}/guias' '${SYNC_PATH}/etc/scripts' '${SYNC_PATH}/logs'"
+rsync -az -e "$RSYNC_SSH" --delete \
+  --exclude '.env*' --exclude 'node_modules/' --exclude 'uploads/' \
+  --exclude 'data/' --exclude 'backups/' --exclude '*.sql' \
+  --exclude '*.sqlite' --exclude '*.sqlite3' \
+  api/ "${SYNC_TARGET}:${SYNC_PATH}/api/"
+rsync -az -e "$RSYNC_SSH" --delete shared/ "${SYNC_TARGET}:${SYNC_PATH}/shared/"
+rsync -az -e "$RSYNC_SSH" --delete web/dist/ "${SYNC_TARGET}:${SYNC_PATH}/dashboard/"
+rsync -az -e "$RSYNC_SSH" --delete landing/dist/ "${SYNC_TARGET}:${SYNC_PATH}/web/"
+rsync -az -e "$RSYNC_SSH" --delete guias/dist/ "${SYNC_TARGET}:${SYNC_PATH}/guias/"
+rsync -az -e "$RSYNC_SSH" ecosystem.config.cjs "${SYNC_TARGET}:${SYNC_PATH}/ecosystem.config.cjs"
+if [[ "$DEMO" == true ]]; then
+  remote "rm -f '${SYNC_PATH}/.demo' && touch '${SYNC_PATH}/dashboard/.demo'"
+  echo 'Modo demo: solo dashboard.hlquery.com queda en solo lectura.'
+else
+  remote "rm -f '${SYNC_PATH}/.demo' '${SYNC_PATH}/dashboard/.demo'"
+fi
+remote "cd '${SYNC_PATH}' && npm --prefix api ci --omit=dev"
+remote "pm2 delete dashcole-api 2>/dev/null || true"
+remote "pm2 delete dashschool-api 2>/dev/null || true"
+remote "cd '${SYNC_PATH}' && pm2 startOrReload ecosystem.config.cjs --env production --update-env"
+if ! remote "cd '${SYNC_PATH}' && node --input-type=module" < etc/scripts/wait-api.mjs; then
+  remote 'pm2 logs dashcole-api --lines 50 --nostream' || true
+  exit 1
+fi
+
+echo '==> Revalidando schema tras el reinicio'
+POST_IDS="$(remote "cd '${SYNC_PATH}/api' && node --input-type=module" <<'NODE'
+import dotenv from 'dotenv';
+import mysql from 'mysql2/promise';
+dotenv.config({ path: '../.env', quiet: true });
+const connection = await mysql.createConnection({
+  host: process.env.MYSQL_HOST || 'localhost',
+  port: Number(process.env.MYSQL_PORT || 3306),
+  user: process.env.MYSQL_USER || 'dashcole',
+  password: process.env.MYSQL_PASSWORD || '',
+  database: process.env.MYSQL_DATABASE || 'dashcole',
+});
+const [rows] = await connection.query('SELECT id FROM schema_migrations ORDER BY id');
+await connection.end();
+process.stdout.write(`${rows.map((row) => row.id).join('\n')}${rows.length ? '\n' : ''}`);
+NODE
+)"
+if ! printf '%s' "$POST_IDS" | node etc/scripts/check-schema-sync.mjs; then
+  echo 'ERR: tras reinstalar, el schema sigue sin cuadrar con el código local.'
+  echo "Backup disponible en ${BACKUP_DIR}"
+  exit 2
+fi
+
+remote 'pm2 save'
+echo "Resync completado. Backup: ${BACKUP_DIR}"
+echo 'Código reinstalado; datos y archivos conservados.'

@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1420" viewBox="0 0 2200 1420" fill="none">
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#0f172a" flood-opacity=".12"/>
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity=".08"/>
+    </filter>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0f172a" flood-opacity=".10"/>
+    </filter>
+    <linearGradient id="chrome" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0f5bff"/>
+    </linearGradient>
+    <style>
+      .ui { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; }
+      .muted { fill: #667085; }
+      .label { fill: #111827; font-size: 22px; font-weight: 750; }
+      .small { fill: #374151; font-size: 18px; font-weight: 550; }
+      .tiny { fill: #475569; font-size: 15px; font-weight: 550; }
+      .nav { fill: #111827; font-size: 22px; font-weight: 720; }
+      .url { fill: #232a34; font-size: 22px; font-weight: 850; }
+      .title { fill: #101828; font-size: 34px; font-weight: 850; }
+      .productTitle { fill: #111827; font-size: 19px; font-weight: 820; }
+      .price { fill: #111827; font-size: 24px; font-weight: 850; }
+      .blueText { fill: #0f5bff; }
+      .stroke { stroke: #dbe4ef; }
+      .softStroke { stroke: #e7edf5; }
+    </style>
+  </defs>
+
+  <g class="ui">
+    <g filter="url(#softShadow)">
+      <rect x="430" y="48" width="1660" height="1268" rx="34" fill="#fff" stroke="#cfd8e3" stroke-width="2.2"/>
+      <path d="M430 82c0-18.8 15.2-34 34-34h1592c18.8 0 34 15.2 34 34v72H430V82Z" fill="url(#chrome)" stroke="#d8e1ec" stroke-width="1.5"/>
+
+      <circle cx="482" cy="102" r="11" fill="#ff5f57"/>
+      <circle cx="516" cy="102" r="11" fill="#ffbd2e"/>
+      <circle cx="550" cy="102" r="11" fill="#28c840"/>
+      <path d="M650 86l-18 16 18 16M704 86l18 16-18 16" stroke="#7b8493" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M782 88a16 16 0 1 0 10 29M792 88v20h20" stroke="#667085" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="840" y="72" width="820" height="50" rx="9" fill="#fbfdff" stroke="#dbe3ee" stroke-width="1.5"/>
+      <path d="M1231 94v-6a10 10 0 0 1 20 0v6" stroke="#4b5563" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="1227" y="94" width="28" height="19" rx="4" fill="#4b5563"/>
+      <text x="1268" y="105" class="url">dashboard.hlquery.com</text>
+      <path d="M1964 92v35M1947 109h35M2020 85h24v24h-24zM2008 97h24v24h-24M1884 120V91M1868 104l16-16 16 16M1866 124h36" stroke="#334155" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+      <rect x="430" y="154" width="1660" height="100" fill="#fff" stroke="#e5edf6" stroke-width="1.5"/>
+      <circle cx="500" cy="204" r="30" fill="url(#blue)"/>
+      <path d="M486 190h16v18h18v16h-34v-34Z" fill="#fff"/>
+      <text x="590" y="213" class="nav">Categories</text>
+      <path d="M725 199l10 10 10-10" stroke="#111827" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="850" y="213" class="nav">New Arrivals</text>
+      <text x="1068" y="213" class="nav">Best Sellers</text>
+      <text x="1284" y="213" class="nav">Brands</text>
+      <text x="1445" y="213" class="nav">Deals</text>
+      <path d="M1838 195c13-22 47-9 36 19-6 14-23 27-36 38-13-11-30-24-36-38-11-28 23-41 36-19Z" stroke="#111827" stroke-width="3" fill="none"/>
+      <path d="M1936 190h24l16 45h-58l18-45ZM1924 190h-19" stroke="#111827" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="1928" cy="250" r="5" fill="#111827"/><circle cx="1970" cy="250" r="5" fill="#111827"/>
+      <circle cx="1970" cy="184" r="14" fill="#0f5bff"/><text x="1963" y="191" fill="#fff" font-size="15" font-weight="850">2</text>
+      <path d="M2042 235c0-23 45-23 45 0M2054 194a16 16 0 1 0 20 0" stroke="#111827" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+      <line x1="760" y1="282" x2="760" y2="1142" stroke="#e2e8f0" stroke-width="2"/>
+      <g transform="translate(482 322)">
+        <text x="0" y="0" class="label">Filters</text>
+        <text x="0" y="64" class="small" font-weight="800">Category</text>
+        <g transform="translate(0 92)">
+          <rect width="22" height="22" rx="4" fill="#0f5bff"/><path d="M6 11l4 4 7-9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="36" y="18" class="small">All Categories</text>
+        </g>
+        <g transform="translate(0 132)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Headphones</text></g>
+        <g transform="translate(0 172)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Earbuds</text></g>
+        <g transform="translate(0 212)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Audio Accessories</text></g>
+        <text x="0" y="294" class="small" font-weight="800">Brand</text>
+        <g transform="translate(0 322)">
+          <g><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Sony</text></g>
+          <g transform="translate(0 36)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Bose</text></g>
+          <g transform="translate(0 72)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">JBL</text></g>
+          <g transform="translate(0 108)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Sennheiser</text></g>
+          <g transform="translate(0 144)"><rect width="22" height="22" rx="4" fill="#fff" stroke="#94a3b8" stroke-width="2"/><text x="36" y="18" class="small">Apple</text></g>
+        </g>
+        <text x="0" y="496" fill="#0f5bff" font-size="17" font-weight="650">Show more</text>
+        <text x="0" y="560" class="small" font-weight="800">Price</text>
+        <line x1="0" y1="604" x2="248" y2="604" stroke="#0f5bff" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="0" cy="604" r="12" fill="#0f5bff"/><circle cx="248" cy="604" r="12" fill="#0f5bff"/>
+        <text x="0" y="586" class="tiny">$0</text><text x="205" y="586" class="tiny">$500+</text><text x="74" y="638" class="tiny">$0 - $500+</text>
+        <text x="0" y="710" class="small" font-weight="800">In stock</text>
+        <rect x="0" y="740" width="50" height="28" rx="14" fill="#0f5bff"/><circle cx="36" cy="754" r="11" fill="#fff"/><text x="66" y="762" class="small">Show only in stock</text>
+        <text x="0" y="824" class="small" font-weight="800">Rating</text>
+        <text x="0" y="872" fill="#0f5bff" font-size="22">★★★★★</text><text x="128" y="872" class="small">&amp; up</text>
+      </g>
+
+      <g transform="translate(805 304)">
+        <rect x="0" y="0" width="860" height="62" rx="12" fill="#fff" stroke="#d9e2ed" stroke-width="2"/>
+        <circle cx="29" cy="31" r="11" stroke="#475569" stroke-width="2.5"/>
+        <path d="M37 39l13 13" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="76" y="40" fill="#111827" font-size="22" font-weight="560">wireless headphones</text>
+        <path d="M816 21l22 22M838 21l-22 22" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+
+        <g filter="url(#cardShadow)">
+          <rect x="0" y="66" width="860" height="178" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+          <g transform="translate(32 104)">
+            <path d="M0 7v17M0 7c0-10 24-10 24 0v17M-6 19h10v16H-6zM20 19h10v16H20z" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="54" y="22" class="small">wireless headphones for travel</text>
+          </g>
+          <g transform="translate(32 150)">
+            <path d="M-4 12c2-22 34-22 36 0M-4 13v18M32 13v18M-12 20h12v18h-12zM32 20h12v18H32z" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="54" y="22" class="small">noise cancelling headphones</text>
+          </g>
+          <g transform="translate(32 196)">
+            <path d="M8-10l24 20-22 15 22 20L8 56V-10ZM-6 9l38 36M-6 45l38-35" stroke="#334155" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="54" y="22" class="small">bluetooth earbuds</text>
+          </g>
+        </g>
+
+        <text x="0" y="334" class="title">Search Results</text>
+        <text x="0" y="372" class="small">Results for </text><text x="102" y="372" fill="#0f5bff" font-size="20" font-weight="750">“wireless headphones”</text>
+        <text x="0" y="404" class="small">1,248 results</text>
+      </g>
+
+      <g transform="translate(805 568)">
+        <g><rect width="180" height="54" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="42" y="35" class="small">Category</text><path d="M138 24l8 8 8-8" stroke="#111827" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g transform="translate(210 0)"><rect width="160" height="54" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="48" y="35" class="small">Brand</text><path d="M120 24l8 8 8-8" stroke="#111827" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g transform="translate(400 0)"><rect width="155" height="54" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="48" y="35" class="small">Price</text><path d="M112 24l8 8 8-8" stroke="#111827" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+        <g transform="translate(588 0)"><rect width="180" height="54" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="42" y="35" class="small">In stock</text><rect x="126" y="18" width="38" height="20" rx="10" fill="#0f5bff"/><circle cx="152" cy="28" r="8" fill="#fff"/></g>
+        <g transform="translate(800 0)"><rect width="180" height="54" rx="14" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="38" y="35" class="small">More filters</text><path d="M140 24l8 8 8-8" stroke="#111827" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+      </g>
+
+      <text x="1730" y="382" class="small">Sort by</text>
+      <rect x="1810" y="352" width="170" height="58" rx="12" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+      <text x="1840" y="389" class="small">Relevance</text><path d="M1948 374l8 8 8-8" stroke="#111827" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+      <g transform="translate(805 655)">
+        <g>
+          <rect width="270" height="520" rx="16" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+          <path d="M111 78c25-42 95-42 120 0v92c0 35-28 63-63 63h-12c-35 0-63-28-63-63V78Z" fill="#111827"/>
+          <ellipse cx="96" cy="183" rx="46" ry="70" fill="#1f2937"/><ellipse cx="205" cy="183" rx="46" ry="70" fill="#101828"/>
+          <path d="M236 42c12-20 45-8 35 18-5 14-22 25-35 36-12-11-29-22-35-36-10-26 24-38 35-18Z" stroke="#334155" stroke-width="2.5" fill="none"/>
+          <text x="28" y="315" class="productTitle">Sony WH-1000XM5</text><text x="28" y="342" class="productTitle">Wireless Headphones</text>
+          <text x="28" y="374" class="small">Sony</text><text x="28" y="420" class="price">$399.99</text>
+          <text x="28" y="458" fill="#0f5bff" font-size="25">★★★★★</text><text x="150" y="456" class="tiny">(1,248)</text>
+          <rect x="28" y="488" width="98" height="42" rx="12" fill="#dcfce7" stroke="#b7efc5"/><text x="44" y="516" fill="#15803d" font-size="18" font-weight="750">In stock</text>
+        </g>
+        <g transform="translate(305 0)">
+          <rect width="270" height="520" rx="16" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+          <path d="M100 78c25-42 92-42 116 0v92c0 34-27 60-60 60h-10c-33 0-60-26-60-60V78Z" fill="#141414"/>
+          <ellipse cx="91" cy="182" rx="43" ry="66" fill="#222"/><ellipse cx="198" cy="182" rx="43" ry="66" fill="#111"/>
+          <path d="M236 42c12-20 45-8 35 18-5 14-22 25-35 36-12-11-29-22-35-36-10-26 24-38 35-18Z" stroke="#334155" stroke-width="2.5" fill="none"/>
+          <text x="28" y="315" class="productTitle">Bose QuietComfort 45</text><text x="28" y="342" class="productTitle">Wireless Headphones</text>
+          <text x="28" y="374" class="small">Bose</text><text x="28" y="420" class="price">$329.00</text>
+          <text x="28" y="458" fill="#0f5bff" font-size="25">★★★★★</text><text x="150" y="456" class="tiny">(956)</text>
+          <rect x="28" y="488" width="98" height="42" rx="12" fill="#dcfce7" stroke="#b7efc5"/><text x="44" y="516" fill="#15803d" font-size="18" font-weight="750">In stock</text>
+        </g>
+        <g transform="translate(610 0)">
+          <rect width="270" height="520" rx="16" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+          <path d="M108 72c28-36 90-36 118 0v100c0 37-30 67-67 67h-5c-37 0-67-30-67-67V72Z" fill="#1f3654"/>
+          <ellipse cx="95" cy="183" rx="45" ry="68" fill="#0f2138"/><ellipse cx="204" cy="183" rx="45" ry="68" fill="#243b5a"/>
+          <path d="M236 42c12-20 45-8 35 18-5 14-22 25-35 36-12-11-29-22-35-36-10-26 24-38 35-18Z" stroke="#334155" stroke-width="2.5" fill="none"/>
+          <text x="28" y="315" class="productTitle">JBL Tune 770NC</text><text x="28" y="342" class="productTitle">Wireless Headphones</text>
+          <text x="28" y="374" class="small">JBL</text><text x="28" y="420" class="price">$129.99</text>
+          <text x="28" y="458" fill="#0f5bff" font-size="25">★★★★★</text><text x="150" y="456" class="tiny">(713)</text>
+          <rect x="28" y="488" width="98" height="42" rx="12" fill="#dcfce7" stroke="#b7efc5"/><text x="44" y="516" fill="#15803d" font-size="18" font-weight="750">In stock</text>
+        </g>
+        <g transform="translate(915 0)">
+          <rect width="270" height="520" rx="16" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+          <path d="M104 76c28-38 91-38 119 0v96c0 37-30 66-66 66h-5c-36 0-66-29-66-66V76Z" fill="#e5e7eb"/>
+          <ellipse cx="95" cy="184" rx="45" ry="69" fill="#f2f4f7" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="204" cy="184" rx="45" ry="69" fill="#dfe3ea" stroke="#cbd5e1" stroke-width="2"/>
+          <path d="M236 42c12-20 45-8 35 18-5 14-22 25-35 36-12-11-29-22-35-36-10-26 24-38 35-18Z" stroke="#334155" stroke-width="2.5" fill="none"/>
+          <text x="28" y="315" class="productTitle">Apple AirPods Max</text><text x="28" y="342" class="productTitle">Wireless Headphones</text>
+          <text x="28" y="374" class="small">Apple</text><text x="28" y="420" class="price">$549.00</text>
+          <text x="28" y="458" fill="#0f5bff" font-size="25">★★★★★</text><text x="150" y="456" class="tiny">(1,102)</text>
+          <rect x="28" y="488" width="98" height="42" rx="12" fill="#dcfce7" stroke="#b7efc5"/><text x="44" y="516" fill="#15803d" font-size="18" font-weight="750">In stock</text>
+        </g>
+      </g>
+    </g>
+
+    <g filter="url(#softShadow)">
+      <rect x="74" y="300" width="380" height="1068" rx="26" fill="#fff" stroke="#d2dce8" stroke-width="2"/>
+      <circle cx="114" cy="342" r="10" fill="#ff5f57"/><circle cx="148" cy="342" r="10" fill="#ffbd2e"/><circle cx="182" cy="342" r="10" fill="#28c840"/>
+      <text x="112" y="424" class="label" font-size="27">Refine Search</text>
+      <path d="M408 419h26M414 409v20M424 409v20" stroke="#334155" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="112" y="478" class="small" font-weight="800">Query</text>
+      <rect x="112" y="500" width="284" height="52" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+      <circle cx="140" cy="526" r="10" stroke="#475569" stroke-width="2.3"/><path d="M147 533l11 11" stroke="#475569" stroke-width="2.3" stroke-linecap="round"/>
+      <text x="174" y="533" class="small">wireless headphones</text>
+      <text x="112" y="606" class="small" font-weight="800">Category</text>
+      <rect x="112" y="628" width="284" height="52" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/>
+      <path d="M138 658v-8c0-18 28-18 28 0v8M132 658h12v18h-12zM160 658h12v18h-12z" stroke="#334155" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <text x="174" y="661" class="small">Headphones</text><path d="M362 648l9 9 9-9" stroke="#111827" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <text x="112" y="734" class="small" font-weight="800">Price range</text>
+      <rect x="112" y="756" width="130" height="50" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="132" y="789" class="small">$0</text>
+      <rect x="266" y="756" width="130" height="50" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="288" y="789" class="small">$500+</text>
+      <text x="252" y="789" class="small">–</text>
+      <line x1="128" y1="842" x2="380" y2="842" stroke="#0f5bff" stroke-width="8" stroke-linecap="round"/><circle cx="128" cy="842" r="12" fill="#0f5bff"/><circle cx="380" cy="842" r="12" fill="#0f5bff"/>
+      <text x="204" y="880" class="tiny">$0 - $500+</text>
+      <text x="112" y="940" class="small" font-weight="800">Sort by</text><rect x="112" y="962" width="284" height="52" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="132" y="995" class="small">Relevance</text><path d="M362 982l9 9 9-9" stroke="#111827" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <text x="112" y="1058" class="small" font-weight="800">In stock only</text><rect x="354" y="1038" width="52" height="30" rx="15" fill="#0f5bff"/><circle cx="392" cy="1053" r="12" fill="#fff"/>
+      <text x="112" y="1114" class="small" font-weight="800">Minimum rating</text><rect x="112" y="1136" width="284" height="52" rx="9" fill="#fff" stroke="#dce5ef" stroke-width="2"/><text x="132" y="1170" fill="#0f5bff" font-size="21">★★★★</text><text x="226" y="1170" fill="#94a3b8" font-size="21">★</text><text x="256" y="1168" class="small">&amp; up</text><path d="M362 1156l9 9 9-9" stroke="#111827" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+      <rect x="112" y="1218" width="284" height="54" rx="10" fill="url(#blue)"/><text x="192" y="1254" fill="#fff" font-size="20" font-weight="800">Apply Filters</text>
+      <text x="206" y="1334" fill="#0f5bff" font-size="19" font-weight="750">Clear all</text>
+    </g>
+  </g>
+</svg>

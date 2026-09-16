@@ -1,0 +1,156 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+SYNC_TARGET="web"
+SYNC_PATH="/home/web/www"
+SSH_OPTIONS=(-o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=3)
+RSYNC_SSH="ssh -o BatchMode=yes -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=3"
+remote() { ssh "${SSH_OPTIONS[@]}" "$SYNC_TARGET" "$@"; }
+load_sync_env() {
+  local env_file="${PROJECT_DIR}/.env"
+  [[ -f "$env_file" ]] || return 0
+  local key value
+  while IFS='=' read -r key value; do
+    key="${key%%[[:space:]]*}"
+    value="${value%%#*}"
+    value="${value%"${value##*[![:space:]]}"}"
+    value="${value#\"}"; value="${value%\"}"; value="${value#\'}"; value="${value%\'}"
+    case "$key" in
+      SYNC_TARGET) [[ -n "$value" ]] && SYNC_TARGET="$value" ;;
+      SYNC_PATH) [[ -n "$value" ]] && SYNC_PATH="$value" ;;
+    esac
+  done < "$env_file"
+}
+load_sync_env
+cd "${PROJECT_DIR}"
+CHECK_ONLY=false
+FRESH=false
+DEMO=false
+for arg in "$@"; do
+  case "$arg" in
+    --check) CHECK_ONLY=true ;;
+    --fresh) FRESH=true ;;
+    --demo) DEMO=true ;;
+    --faker) echo "El parámetro --faker ya no existe. Los colegios demo se instalan al arrancar la API (DEMO_RESET_ENABLED). Usa: ./etc/scripts/sync2 [--demo]"; exit 1 ;;
+    *) echo 'Uso: sync2 [--check] [--fresh] [--demo]'; exit 1 ;;
+  esac
+done
+for executable in rsync ssh; do
+  command -v "$executable" >/dev/null || { echo "Falta ${executable}."; exit 1; }
+done
+
+# Check configuration before spending time building; SSH errors must abort.
+REMOTE_ENV="$(remote "if test -f '${SYNC_PATH}/.env'; then echo exists; else echo missing; fi")"
+if [[ "$REMOTE_ENV" == missing ]]; then
+  node etc/scripts/check-production-env.mjs .env.production
+elif [[ "$REMOTE_ENV" != exists ]]; then
+  echo 'No se pudo comprobar la configuración remota.'; exit 1
+else
+  remote "cat '${SYNC_PATH}/.env'" | node etc/scripts/check-production-env.mjs -
+fi
+remote "command -v node >/dev/null && command -v npm >/dev/null && command -v pm2 >/dev/null" \
+  || { echo 'El servidor remoto requiere node, npm y pm2 antes de publicar.'; exit 1; }
+
+if [[ "$CHECK_ONLY" == true ]]; then
+  echo 'Verificación completada; no se publicaron cambios.'
+  exit 0
+fi
+
+if [[ "$FRESH" == true ]]; then
+  echo 'Modo --fresh: se reinstalarán dependencias remotas y se vaciará api/uploads (se conservan .env y SQL).'
+fi
+
+# A failed build must never touch the deployed application.
+(cd web && NODE_ENV=production VITE_API_URL=https://api.hlquery.com/api npm run build)
+(cd landing && \
+  NODE_ENV=production \
+  VITE_API_URL=https://api.hlquery.com/api \
+  VITE_API_DOMAIN=api.hlquery.com \
+  VITE_LOGIN_URL=https://dashboard.hlquery.com/login \
+  VITE_DASHBOARD_URL=https://dashboard.hlquery.com \
+  VITE_DASHBOARD_PATH=/ \
+  VITE_DASHBOARD_DOMAIN=dashboard.hlquery.com \
+  VITE_WEB_URL=https://www.hlquery.com \
+  VITE_WEB_DOMAIN=www.hlquery.com \
+  VITE_BASE_DOMAIN=hlquery.com \
+  npm run build)
+(cd guias && NODE_ENV=production VITE_API_URL=https://api.hlquery.com npm run build)
+
+remote "mkdir -p '${SYNC_PATH}/api/src' '${SYNC_PATH}/dashboard' '${SYNC_PATH}/web' '${SYNC_PATH}/guias' '${SYNC_PATH}/etc/scripts' '${SYNC_PATH}/logs'"
+if [[ "$REMOTE_ENV" == missing ]]; then
+  rsync -az -e "$RSYNC_SSH" --chmod=F600 .env.production "${SYNC_TARGET}:${SYNC_PATH}/.env"
+fi
+
+rsync -az -e "$RSYNC_SSH" --delete \
+  --exclude '.env*' --exclude 'node_modules/' --exclude 'uploads/' \
+  --exclude 'data/' --exclude 'backups/' --exclude '*.sql' \
+  --exclude '*.sqlite' --exclude '*.sqlite3' \
+  api/ "${SYNC_TARGET}:${SYNC_PATH}/api/"
+rsync -az -e "$RSYNC_SSH" --delete shared/ "${SYNC_TARGET}:${SYNC_PATH}/shared/"
+# Siempre re-publica dashboard + landing (web/) + guias/ (guias.hlquery.com).
+rsync -az -e "$RSYNC_SSH" --delete web/dist/ "${SYNC_TARGET}:${SYNC_PATH}/dashboard/"
+rsync -az -e "$RSYNC_SSH" --delete landing/dist/ "${SYNC_TARGET}:${SYNC_PATH}/web/"
+rsync -az -e "$RSYNC_SSH" --delete guias/dist/ "${SYNC_TARGET}:${SYNC_PATH}/guias/"
+echo "Publicados estáticos: dashboard → ${SYNC_PATH}/dashboard, www → ${SYNC_PATH}/web, guias → ${SYNC_PATH}/guias"
+rsync -az -e "$RSYNC_SSH" ecosystem.config.cjs "${SYNC_TARGET}:${SYNC_PATH}/ecosystem.config.cjs"
+# --demo solo afecta dashboard.hlquery.com (marcador en dashboard/.demo). www y guias no cambian.
+if [[ "$DEMO" == true ]]; then
+  remote "rm -f '${SYNC_PATH}/.demo' && touch '${SYNC_PATH}/dashboard/.demo'"
+  echo 'Modo demo: solo dashboard.hlquery.com queda en solo lectura.'
+else
+  remote "rm -f '${SYNC_PATH}/.demo' '${SYNC_PATH}/dashboard/.demo'"
+fi
+
+# Stop the API before wiping modules so no process holds open files.
+remote "pm2 delete dashcole-api 2>/dev/null || true"
+remote "pm2 delete dashschool-api 2>/dev/null || true"
+
+if [[ "$FRESH" == true ]]; then
+  echo 'Limpiando node_modules y uploads remotos para instalación fresca…'
+  remote "rm -rf '${SYNC_PATH}/api/node_modules' '${SYNC_PATH}/api/.npm' '${SYNC_PATH}/node_modules'"
+  remote "rm -rf '${SYNC_PATH}/api/uploads' && mkdir -p '${SYNC_PATH}/api/uploads/avatars' '${SYNC_PATH}/api/uploads/files'"
+fi
+
+remote "cd '${SYNC_PATH}' && npm --prefix api ci --omit=dev"
+remote "cd '${SYNC_PATH}' && pm2 startOrReload ecosystem.config.cjs --env production --update-env"
+if ! remote "cd '${SYNC_PATH}' && node --input-type=module" < etc/scripts/wait-api.mjs; then
+  remote 'pm2 logs dashcole-api --lines 50 --nostream' || true
+  exit 1
+fi
+
+NGINX_CHECK="$(remote "if test -d /etc/nginx/sites-enabled; then
+  for pair in 'dashboard:${SYNC_PATH}/dashboard' 'web:${SYNC_PATH}/web' 'guias:${SYNC_PATH}/guias'; do
+    name=\${pair%%:*}; root=\${pair#*:}; matched=false
+    for file in /etc/nginx/sites-enabled/*; do
+      grep -Fq \"root \$root\" \"\$file\" 2>/dev/null || continue
+      matched=true
+    done
+    \$matched || echo missing:\$name
+  done
+  grep -Rqs 'server_name api.hlquery.com' /etc/nginx/sites-enabled || echo missing:api
+fi")"
+if [[ "$NGINX_CHECK" == *missing:dashboard* ]]; then
+  echo "ERROR: falta vhost nginx con root ${SYNC_PATH}/dashboard (dashboard.hlquery.com)."
+  echo "Instala etc/deploy/hlquery-dashboard.nginx"
+  exit 1
+fi
+if [[ "$NGINX_CHECK" == *missing:api* ]]; then
+  echo "ERROR: falta vhost api.hlquery.com hacia el PORT remoto (7000)."
+  echo "Instala etc/deploy/hlquery-api.nginx"
+  exit 1
+fi
+if [[ "$NGINX_CHECK" == *missing:* ]]; then
+  echo "Aviso: nginx incompleto (${NGINX_CHECK}). Revisa etc/deploy/hlquery-*.nginx"
+fi
+remote 'pm2 save'
+if [[ "$FRESH" == true ]]; then
+  echo 'Sincronización fresca completada; dependencias reinstaladas; uploads remotos vaciados.'
+else
+  echo 'Sincronización completada en producción; datos y archivos conservados.'
+fi
+if [[ "$DEMO" == true ]]; then
+  echo 'Demo activo solo en dashboard.hlquery.com (dashboard/.demo). www.hlquery.com y guias.hlquery.com se publicaron igual, sin solo lectura.'
+fi
+echo "Publicado en ${SYNC_TARGET}:${SYNC_PATH} → dashboard.hlquery.com + www.hlquery.com + guias.hlquery.com + api.hlquery.com."

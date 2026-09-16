@@ -1,0 +1,208 @@
+/* Metronic-inspired design tokens and helpers */
+:root {
+  --ds-font-family-base: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ds-font-family-heading: "Space Grotesk", "Poppins", var(--ds-font-family-base);
+  --ds-line-height-body: 1.6;
+  --ds-letter-spacing-tight: -0.02em;
+  --ds-radius-base: 12px;
+  --ds-radius-lg: 18px;
+  --ds-radius-pill: 999px;
+  --ds-shadow-soft: 0 15px 40px rgba(15, 23, 42, 0.08);
+  --ds-shadow-card: 0 25px 45px rgba(15, 23, 42, 0.12);
+  --ds-gap-1: 4px;
+  --ds-gap-2: 8px;
+  --ds-gap-3: 12px;
+  --ds-gap-4: 16px;
+  --ds-gap-5: 24px;
+  --ds-gap-6: 32px;
+  --ds-text-secondary-strong: var(--text-secondary, #9ca3af);
+  --ds-border-smart: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--ds-font-family-base);
+  line-height: var(--ds-line-height-body);
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--ds-font-family-heading);
+  letter-spacing: var(--ds-letter-spacing-tight);
+  margin-top: 0;
+}
+
+.ds-page {
+  padding: var(--ds-gap-6) var(--ds-gap-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-gap-6);
+}
+
+.ds-panel-header {
+  background: var(--card-bg);
+  border: var(--ds-border-smart);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-gap-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ds-gap-3);
+  box-shadow: var(--ds-shadow-soft);
+}
+
+.ds-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ds-section-subtitle {
+  color: var(--ds-text-secondary-strong);
+  font-size: 0.95rem;
+  margin-top: var(--ds-gap-1);
+}
+
+.ds-card {
+  background: var(--card-bg);
+  border: var(--ds-border-smart);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-card);
+  padding: var(--ds-gap-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-gap-3);
+}
+
+.ds-card-elevated {
+  box-shadow: 0 25px 45px rgba(15, 23, 42, 0.15);
+}
+
+.ds-card-inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--ds-gap-4);
+}
+
+.ds-btn {
+  border-radius: var(--ds-radius-pill);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ds-btn-primary {
+  background: var(--btn-primary-bg);
+  color: #ffffff;
+  box-shadow: 0 15px 30px rgba(37, 99, 235, 0.25);
+}
+
+.ds-btn-primary:hover {
+  transform: translateY(-1px);
+  background: var(--btn-primary-hover);
+}
+
+.ds-btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.ds-status-pill {
+  border-radius: var(--ds-radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ds-status-pill.operational {
+  color: var(--success);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.ds-status-pill.degraded {
+  color: var(--warning);
+  background: rgba(249, 115, 22, 0.12);
+}
+
+.ds-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--ds-radius-pill);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.ds-chip {
+  border-radius: var(--ds-radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--text-secondary);
+}
+
+.ds-helper-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary-strong);
+}
+
+.dashboard-header-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-gap-4);
+  justify-content: space-between;
+}
+
+.dashboard-header-inner .header-left {
+  flex: 1;
+  min-width: 240px;
+}
+
+.dashboard-header-inner .header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-gap-2);
+}
+
+.notifications-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-gap-3);
+}
+
+.notifications-card .notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-gap-3);
+}
+
+@media (max-width: 900px) {
+  .ds-page {
+    padding: var(--ds-gap-4) var(--ds-gap-2);
+  }
+
+  .ds-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

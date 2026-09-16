@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+
+if docker compose version >/dev/null 2>&1; then
+  COMPOSE=(docker compose)
+elif command -v docker-compose >/dev/null 2>&1; then
+  COMPOSE=(docker-compose)
+else
+  echo "Error: Docker Compose no está disponible."
+  exit 1
+fi
+
+cd "${PROJECT_DIR}"
+[[ -f .env ]] || cp .env.example .env
+# Parse the shared root file as dotenv data, including spaces and SMTP_FROM.
+while IFS= read -r -d '' entry; do
+  export "$entry"
+done < <(node --env-file=.env -e 'const fs = require("node:fs"); for (const match of fs.readFileSync(".env", "utf8").matchAll(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=/gm)) { const key = match[1]; process.stdout.write(key + "=" + process.env[key] + "\0"); }')
+
+SERVICES=(redis)
+USE_DOCKER_MYSQL=false
+if [[ "${MYSQL_PORT:-3306}" == "${MYSQL_DOCKER_PORT:-${MYSQL_PORT:-3306}}" ]]; then
+  SERVICES=(mysql redis)
+  USE_DOCKER_MYSQL=true
+fi
+
+echo "1) Eliminando contenedores y volúmenes locales..."
+"${COMPOSE[@]}" down --volumes --remove-orphans
+
+echo "2) Instalando dependencias..."
+for project in api web landing; do
+  if [[ "${project}" == "landing" ]]; then
+    (cd "${PROJECT_DIR}/${project}" && npm install)
+  else
+    (cd "${PROJECT_DIR}/${project}" && npm install --legacy-peer-deps)
+  fi
+done
+
+echo "3) Iniciando servicios locales: ${SERVICES[*]}..."
+"${COMPOSE[@]}" up -d "${SERVICES[@]}"
+
+echo "4) Esperando servicios..."
+for attempt in {1..40}; do
+  mysql_ready=1
+  if [[ "${USE_DOCKER_MYSQL}" == true ]]; then
+    mysql_ready="$("${COMPOSE[@]}" ps --format json mysql 2>/dev/null | grep -c 'healthy' || true)"
+  fi
+  redis_ready="$("${COMPOSE[@]}" ps --format json redis 2>/dev/null | grep -c 'healthy' || true)"
+  if [[ "${mysql_ready}" -gt 0 && "${redis_ready}" -gt 0 ]]; then
+    break
+  fi
+  if [[ "${attempt}" -eq 40 ]]; then
+    echo "Los servicios no estuvieron listos a tiempo."
+    exit 1
+  fi
+  sleep 2
+done
+
+echo "5) Recreando esquema y cuenta inicial en la base configurada..."
+(cd api && npm run db:reset)
+
+echo "6) Verificando dashboard y landing..."
+(cd web && npm run build)
+(cd landing && npm run build)
+
+echo "x3 completado: DashCole quedó instalado con admin@hlquery.com / admin y demo@hlquery.com / admin."
+echo "Ejecuta ./etc/scripts/x2 para comenzar a desarrollar."
+echo "Ejecuta ./etc/scripts/x4 si quieres cargar datos Faker (todas las claves quedan en admin)."

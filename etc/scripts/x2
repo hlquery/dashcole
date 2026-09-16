@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+TARGET_DIR="${PROJECT_DIR}/target"
+API_PID=""
+WEB_PID=""
+LANDING_PID=""
+TAIL_PID=""
+
+compose_command() {
+  if docker compose version >/dev/null 2>&1; then
+    COMPOSE=(docker compose)
+  elif command -v docker-compose >/dev/null 2>&1; then
+    COMPOSE=(docker-compose)
+  else
+    echo "Error: Docker Compose no está disponible."
+    exit 1
+  fi
+}
+
+cleanup() {
+  trap - EXIT INT TERM
+  echo
+  echo "Deteniendo servidores de desarrollo..."
+  [[ -n "${TAIL_PID}" ]] && kill "${TAIL_PID}" 2>/dev/null || true
+  [[ -n "${API_PID}" ]] && kill "${API_PID}" 2>/dev/null || true
+  [[ -n "${WEB_PID}" ]] && kill "${WEB_PID}" 2>/dev/null || true
+  [[ -n "${LANDING_PID}" ]] && kill "${LANDING_PID}" 2>/dev/null || true
+  [[ -n "${API_PID}" ]] && wait "${API_PID}" 2>/dev/null || true
+  [[ -n "${WEB_PID}" ]] && wait "${WEB_PID}" 2>/dev/null || true
+  [[ -n "${LANDING_PID}" ]] && wait "${LANDING_PID}" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+cd "${PROJECT_DIR}"
+command -v npm >/dev/null 2>&1 || { echo "Error: npm no está disponible."; exit 1; }
+command -v docker >/dev/null 2>&1 || { echo "Error: Docker no está disponible."; exit 1; }
+compose_command
+mkdir -p "${TARGET_DIR}"
+[[ -f .env ]] || cp .env.example .env
+# Parse the shared root file as dotenv data, including spaces and SMTP_FROM.
+while IFS= read -r -d '' entry; do
+  export "$entry"
+done < <(node --env-file=.env -e 'const fs = require("node:fs"); for (const match of fs.readFileSync(".env", "utf8").matchAll(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=/gm)) { const key = match[1]; process.stdout.write(key + "=" + process.env[key] + "\0"); }')
+
+SERVICES=(redis)
+USE_DOCKER_MYSQL=false
+if [[ "${MYSQL_PORT:-3306}" == "${MYSQL_DOCKER_PORT:-${MYSQL_PORT:-3306}}" ]]; then
+  SERVICES=(mysql redis)
+  USE_DOCKER_MYSQL=true
+fi
+
+for project in api web landing; do
+  if [[ ! -d "${project}/node_modules" || ! -f "${project}/package-lock.json" || "${project}/package.json" -nt "${project}/node_modules/.package-lock.json" ]]; then
+    echo "Instalando dependencias de ${project}..."
+    if [[ "${project}" == "landing" ]]; then
+      (cd "${project}" && npm install)
+    else
+      (cd "${project}" && npm install --legacy-peer-deps)
+    fi
+  else
+    echo "Usando dependencias existentes de ${project}..."
+  fi
+done
+
+echo "Iniciando servicios locales: ${SERVICES[*]}..."
+"${COMPOSE[@]}" up -d "${SERVICES[@]}"
+
+echo "Esperando servicios..."
+for attempt in {1..40}; do
+  mysql_ready=1
+  if [[ "${USE_DOCKER_MYSQL}" == true ]]; then
+    mysql_ready="$("${COMPOSE[@]}" ps --format json mysql 2>/dev/null | grep -c 'healthy' || true)"
+  fi
+  redis_ready="$("${COMPOSE[@]}" ps --format json redis 2>/dev/null | grep -c 'healthy' || true)"
+  if [[ "${mysql_ready}" -gt 0 && "${redis_ready}" -gt 0 ]]; then
+    break
+  fi
+  if [[ "${attempt}" -eq 40 ]]; then
+    echo "MySQL o Redis no estuvieron listos. Revisa los logs de Docker."
+    exit 1
+  fi
+  sleep 2
+done
+
+echo "Iniciando API..."
+(cd api && npm run dev) > "${TARGET_DIR}/api-dev.log" 2>&1 &
+API_PID=$!
+
+echo "Iniciando dashboard..."
+(cd web && npm run dev) > "${TARGET_DIR}/web-dev.log" 2>&1 &
+WEB_PID=$!
+
+echo "Iniciando landing comercial..."
+(cd landing && npm run dev) > "${TARGET_DIR}/landing-dev.log" 2>&1 &
+LANDING_PID=$!
+
+echo "Landing:   http://localhost:5173"
+echo "Dashboard: http://localhost:5174"
+echo "API:       http://localhost:${PORT:-6666}/api/health"
+echo "Logs: target/api-dev.log, target/web-dev.log y target/landing-dev.log"
+echo "Siguiendo logs; presiona Ctrl+C para detener los servidores."
+touch "${TARGET_DIR}/api-dev.log" "${TARGET_DIR}/web-dev.log" "${TARGET_DIR}/landing-dev.log"
+tail -n 30 -F "${TARGET_DIR}/api-dev.log" "${TARGET_DIR}/web-dev.log" "${TARGET_DIR}/landing-dev.log" &
+TAIL_PID=$!
+
+while kill -0 "${API_PID}" 2>/dev/null && kill -0 "${WEB_PID}" 2>/dev/null && kill -0 "${LANDING_PID}" 2>/dev/null; do
+  sleep 1
+done
+
+kill "${TAIL_PID}" 2>/dev/null || true
+echo "Uno de los servidores terminó inesperadamente. Revisa target/*.log."
+exit 1

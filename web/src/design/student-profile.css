@@ -1,0 +1,361 @@
+/* Student detail: identity, metrics and section cards with clear separation. */
+.app-shell .student-profile-page {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.student-ficha-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.student-ficha-card {
+  padding: 22px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text) 4%, transparent);
+}
+
+.student-ficha-identity {
+  padding: 20px 22px;
+}
+
+.student-profile-page .profile-summary {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.student-profile-page .profile-avatar-wrap,
+.student-profile-page .profile-avatar-wrap .avatar.large {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+}
+
+.student-profile-page .profile-avatar-wrap .avatar.large {
+  font-size: 24px;
+}
+
+.student-profile-eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--color-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.student-profile-page .profile-identity h3 {
+  margin: 0;
+  font-size: clamp(20px, 2.3vw, 28px);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.student-profile-page .profile-identity p {
+  margin: 6px 0 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  color: var(--color-muted);
+}
+
+.student-identity-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.student-identity-status > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.student-ficha-metrics {
+  padding: 16px;
+}
+
+.student-profile-page .profile-metrics,
+.student-ficha-metrics .profile-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  grid-column: auto;
+}
+
+.student-profile-page .profile-metrics > span,
+.student-profile-page .profile-metrics > .profile-metric-button {
+  min-width: 0;
+  min-height: 96px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-canvas);
+  display: grid;
+  align-content: space-between;
+  align-items: flex-start;
+  text-align: left;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 650;
+  text-transform: none;
+  color: var(--color-muted);
+  box-shadow: none;
+}
+
+.student-profile-page .profile-metrics strong {
+  color: var(--color-text);
+  font-size: 26px;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+
+.student-profile-page .profile-metric-button:hover {
+  border-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.student-profile-page .student-course-management,
+.student-profile-page .student-ficha-card.student-course-management {
+  margin-top: 0;
+  padding: 22px 24px;
+}
+
+.student-profile-page .section-heading {
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.student-profile-page .section-heading h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.student-profile-page .section-heading p {
+  max-width: 640px;
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-muted);
+}
+
+.student-profile-page .student-profile-facts {
+  margin: 4px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.student-profile-page .student-profile-facts > div {
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-canvas);
+}
+
+.student-profile-page .student-profile-facts dt {
+  margin: 0 0 6px;
+  color: var(--color-subtle);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.student-profile-page .student-profile-facts dd {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.student-profile-page .student-profile-facts dd small {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.student-family-contacts-heading,
+.student-family-years-heading {
+  margin-top: 0;
+}
+
+.student-profile-toolbar .student-profile-actions { flex: 1; }
+
+.student-profile-page button:focus-visible,
+.student-profile-toolbar button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.student-profile-page .profile-avatar-action:focus,
+.student-profile-page .profile-avatar-action:focus-visible,
+.student-profile-page .profile-avatar-action:focus-within {
+  outline: none;
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--color-text) 20%, transparent);
+}
+
+.student-ficha-other .profile-grades-heading,
+.student-ficha-other .student-year-navigation,
+.student-ficha-other .profile-grade-groups,
+.student-ficha-other .table-scroll,
+.student-ficha-other .empty-grades,
+.student-ficha-other .section-heading {
+  padding: 0;
+}
+
+.student-ficha-other > .section-heading,
+.student-ficha-other > .table-scroll,
+.student-ficha-other > .profile-grades-heading,
+.student-ficha-other > .student-year-navigation,
+.student-ficha-other > .profile-grade-groups,
+.student-ficha-other > .empty-grades,
+.student-ficha-other > .module-empty,
+.student-ficha-other > .guardian-assign-section {
+  padding: 22px 24px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+}
+
+.student-ficha-other > .guardian-assign-section {
+  margin-top: 0;
+}
+
+@media (max-width: 1100px) {
+  .student-profile-toolbar .student-profile-actions { flex-basis: 100%; }
+  .student-profile-page .profile-metrics,
+  .student-ficha-metrics .profile-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .student-profile-page .student-profile-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .student-ficha-layout { gap: 14px; }
+  .student-ficha-card,
+  .student-profile-page .student-course-management,
+  .student-ficha-other > .section-heading,
+  .student-ficha-other > .table-scroll,
+  .student-ficha-other > .profile-grades-heading,
+  .student-ficha-other > .student-year-navigation,
+  .student-ficha-other > .profile-grade-groups,
+  .student-ficha-other > .empty-grades,
+  .student-ficha-other > .module-empty,
+  .student-ficha-other > .guardian-assign-section {
+    padding: 16px;
+    border-radius: 14px;
+  }
+  .student-profile-page .profile-summary { gap: 14px; }
+  .student-profile-page .profile-avatar-wrap,
+  .student-profile-page .profile-avatar-wrap .avatar.large {
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+  }
+  .student-profile-page .profile-identity h3 { font-size: 20px; }
+  .student-profile-page .profile-metrics,
+  .student-ficha-metrics .profile-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .student-profile-page .profile-metrics > span,
+  .student-profile-page .profile-metrics > .profile-metric-button {
+    min-height: 84px;
+    padding: 12px;
+  }
+  .student-profile-page .profile-metrics strong { font-size: 22px; }
+  .student-profile-page .student-profile-facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.student-year-current {
+  color: var(--color-subtle);
+  font-size: 11px;
+  font-weight: 650;
+}
+.student-historial-layout {
+  gap: 16px;
+}
+.student-historial-year-filter {
+  margin-top: 4px;
+}
+.student-historial-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.student-historial-kpis-wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.student-historial-subject {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.student-historial-subject i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+.student-historial-kpis article {
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-canvas) 70%, var(--color-surface));
+  display: grid;
+  gap: 6px;
+}
+.student-historial-kpis span {
+  color: var(--color-subtle);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.student-historial-kpis strong {
+  color: var(--color-text);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.student-family-years-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .student-historial-kpis {
+    grid-template-columns: 1fr;
+  }
+  .student-family-years-heading {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,206 @@
+/* Dark Theme Styles */
+:root.dark-mode,
+[data-theme="dark"] {
+  /* Colors */
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --border-color: #374151;
+  --border-color-light: #4b5563;
+  
+  /* Dashboard specific */
+  --dashboard-bg: #0f172a;
+  --card-bg: #1f2937;
+  --card-border: rgba(75, 85, 99, 0.5);
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  
+  /* Header */
+  --header-bg: #1f2937;
+  --header-border: rgba(75, 85, 99, 0.5);
+  
+  /* Sidebar (always dark) */
+  --sidebar-bg: #1c2930;
+  --sidebar-text: #e5e7eb;
+  --sidebar-hover: rgba(255, 255, 255, 0.1);
+  
+  /* Inputs */
+  --input-bg: #374151;
+  --input-border: #4b5563;
+  --input-focus-border: #60a5fa;
+  --input-focus-shadow: rgba(96, 165, 250, 0.2);
+  
+  /* Buttons */
+  --btn-primary-bg: #3b82f6;
+  --btn-primary-hover: #60a5fa;
+  --btn-secondary-bg: #374151;
+  --btn-secondary-hover: #4b5563;
+  
+  /* Status colors */
+  --success: #34d399;
+  --error: #f87171;
+  --warning: #fbbf24;
+  --info: #60a5fa;
+}
+
+/* Apply dark theme styles */
+body.dark-mode,
+.dark-mode .v-application {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  /* Maximum antialiasing */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.dark-mode .dashboard-main {
+  background-color: var(--dashboard-bg) !important;
+}
+
+.dark-mode .v-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .dashboard-app-bar {
+  background-color: var(--header-bg) !important;
+  border-bottom: 1px solid var(--header-border) !important;
+}
+
+/* Inputs in dark mode */
+.dark-mode .v-text-field .v-field,
+.dark-mode .v-select .v-field,
+.dark-mode input,
+.dark-mode textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--input-border) !important;
+}
+
+.dark-mode .v-text-field .v-field:focus-within,
+.dark-mode .v-select .v-field:focus-within,
+.dark-mode input:focus,
+.dark-mode textarea:focus {
+  border-color: var(--input-focus-border) !important;
+  box-shadow: 0 0 0 3px var(--input-focus-shadow) !important;
+}
+
+/* Buttons in dark mode */
+.dark-mode .v-btn--variant-elevated {
+  background-color: var(--btn-primary-bg) !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .v-btn--variant-elevated:hover {
+  background-color: var(--btn-primary-hover) !important;
+}
+
+.dark-mode .v-btn--variant-outlined {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Text colors in dark mode */
+.dark-mode .text-primary {
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode .text-tertiary {
+  color: var(--text-tertiary) !important;
+}
+
+/* Cards and containers */
+.dark-mode .settings-content-card,
+.dark-mode .settings-nav-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--card-border) !important;
+}
+
+.dark-mode .dashboard-home,
+.dark-mode .dashboard-content {
+  background-color: var(--dashboard-bg) !important;
+}
+
+/* Tables */
+.dark-mode .v-data-table {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .v-data-table th {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .v-data-table td {
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Lists */
+.dark-mode .v-list {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .v-list-item {
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .v-list-item:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Dividers */
+.dark-mode .v-divider {
+  border-color: var(--border-color) !important;
+}
+
+/* Alerts and messages */
+.dark-mode .v-alert {
+  background-color: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Search input */
+.dark-mode .search-input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--input-border) !important;
+}
+
+.dark-mode .search-bar-wrapper {
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* Maximum antialiasing for all dark mode elements */
+.dark-mode *,
+.dark-mode *::before,
+.dark-mode *::after {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+

@@ -1,0 +1,3268 @@
+/* Sohne font - using fallback fonts instead of external CDN to avoid 404 errors */
+/* @font-face {
+  font-family: 'Söhne';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.cdnfonts.com/s/112557/SohneBreitTest-VF.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'sohne-var';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://fonts.cdnfonts.com/s/112557/SohneBreitTest-VF.woff2') format('woff2');
+} */
+
+/* CSS Variables for Stripe-style typography */
+:root {
+  --font-family-sohne: 'sohne-var', 'Söhne', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-variation-weight: 400;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lead: 18px;
+  --font-size-subheading: 26px;
+  --font-size-heading: 34px;
+  --font-size-hero: 56px;
+  --line-height-base: 1.5;
+  --line-height-lead: 1.4;
+  --line-height-subheading: 1.12;
+  --line-height-heading: 1.07;
+  --line-height-hero: 1.03;
+  --line-height-loose: 1.75;
+  --color-stripe-title: rgb(10, 37, 64);
+  --color-stripe-text: rgb(10, 37, 64);
+  --color-stripe-blue: rgb(10, 37, 64);
+  --hero-bg-color: #f8fafc;
+  --hq-navy-950: #061f36;
+  --hq-navy-900: #0a2540;
+  --hq-navy-800: #0b3a67;
+  --hq-navy-700: #124d7a;
+  --hq-text-secondary: #425466;
+  --hq-surface: #ffffff;
+  --hq-surface-muted: #f5f9fc;
+  --hq-border: #dfe7ef;
+  --hq-border-strong: #cdd8e5;
+  --hq-radius-control: 7px;
+  --hq-radius-surface: 12px;
+  --hq-shadow-raised:
+    0 1px 2px rgba(10, 37, 64, 0.08),
+    0 3px 8px rgba(10, 37, 64, 0.06),
+    0 14px 30px rgba(10, 37, 64, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  --hq-font-sans: 'sohne-var', 'Söhne', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --hq-content-width: 1200px;
+  --hq-page-gutter: clamp(1.25rem, 3.4vw, 3rem);
+  --hq-section-space: clamp(5.5rem, 8vw, 8rem);
+  --hq-section-space-compact: clamp(4rem, 6vw, 6rem);
+  --hq-display-tracking: -0.05em;
+  --hq-heading-tracking: -0.035em;
+  --hq-body-tracking: -0.012em;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Keep text rendering crisp without forcing GPU layers everywhere */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: var(--color-stripe-text);
+  font-optical-sizing: auto;
+  font-variation-settings: 'wght' var(--font-variation-weight);
+  background-color: #fafafa;
+  /* Maximum antialiasing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+  will-change: scroll-position;
+}
+
+html {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+body {
+  overflow-y: visible;
+}
+
+/* Maximum antialiasing for ALL elements including pseudo-elements */
+*, *::before, *::after {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, select, label {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Keep every footer on the shared Stripe-like surface. */
+footer.footer,
+.footer,
+footer {
+  background: #f5f9fc !important;
+  background-color: #f5f9fc !important;
+  background-image: none !important;
+}
+
+/* Common form styles */
+form {
+  width: 100%;
+}
+
+/* Shared editorial proof banner, modeled after Stripe's sober metric sections. */
+html body #app .global-data-section {
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 8rem 0 7.5rem !important;
+  background: #ffffff !important;
+  color: #0a2540 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  overflow: hidden !important;
+}
+
+html body #app .global-data-section .light-ray,
+html body #app .global-data-section .vertical-divider,
+html body #app .global-data-section .global-data-visual {
+  display: none !important;
+}
+
+html body #app .global-data-section .global-data-container {
+  width: min(calc(100% - 2rem), 1060px) !important;
+  max-width: 1060px !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+html body #app .global-data-section .global-data-grid {
+  display: block !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #app .api-launch-section .global-data-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr) !important;
+  gap: clamp(2.5rem, 6vw, 6rem) !important;
+  align-items: center !important;
+}
+
+html body #app .api-launch-section .api-launch-benefits {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 900px) {
+  html body #app .api-launch-section .global-data-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html body #app .api-launch-section .api-launch-benefits {
+    margin-top: 1rem !important;
+  }
+}
+
+html body #app .global-data-section .global-data-content {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #0a2540 !important;
+  text-align: left !important;
+  transform: none !important;
+}
+
+html body #app .global-data-section .global-data-eyebrow {
+  display: block !important;
+  max-width: 682px !important;
+  margin: 0 0 1.75rem !important;
+  color: #2563eb !important;
+  font-family: var(--font-family-sohne) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+}
+
+html body #app .global-data-section .global-data-title {
+  max-width: 780px !important;
+  margin: 0 0 1.75rem !important;
+  color: #0a2540 !important;
+  font-family: var(--font-family-sohne) !important;
+  font-size: clamp(2.25rem, 4vw, 2.5rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.035em !important;
+  text-shadow: none !important;
+}
+
+html body #app .global-data-section .global-data-subtitle,
+html body #app .global-data-section .global-data-description {
+  max-width: 682px !important;
+  color: #425466 !important;
+  font-family: var(--font-family-sohne) !important;
+  font-size: 1.125rem !important;
+  font-weight: 400 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+html body #app .global-data-section .global-data-subtitle {
+  margin: 0 0 0.4rem !important;
+}
+
+html body #app .global-data-section .global-data-description {
+  margin: 0 !important;
+}
+
+html body #app .global-data-section .commerce-language-prompt {
+  max-width: 682px !important;
+  margin: 1rem 0 0 !important;
+  color: #425466 !important;
+  font-size: 0.95rem !important;
+}
+
+html body #app .global-data-section .global-stats-row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 4.25rem 0 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  align-items: start !important;
+}
+
+html body #app .global-data-section .global-stat-divider,
+html body #app .global-data-section .global-stat-icon {
+  display: none !important;
+}
+
+html body #app .global-data-section .global-stat-item {
+  display: block !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 106px !important;
+  margin: 0 !important;
+  padding: 0 1.5rem 0 1rem !important;
+  border: 0 !important;
+  border-left: 1px solid #2563eb !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #0a2540 !important;
+  text-align: left !important;
+  transform: none !important;
+}
+
+html body #app .global-data-section .global-stat-number {
+  margin: 0 0 0.6rem !important;
+  color: #2563eb !important;
+  font-family: var(--font-family-sohne) !important;
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.025em !important;
+  text-shadow: none !important;
+}
+
+html body #app .global-data-section .global-stat-label {
+  max-width: 225px !important;
+  margin: 0 !important;
+  color: #425466 !important;
+  font-family: var(--font-family-sohne) !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+  text-shadow: none !important;
+}
+
+html body #app .global-data-section .global-marketing-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  margin: 4.25rem 0 0 !important;
+  gap: 0 !important;
+}
+
+html body #app .global-data-section .global-marketing-card {
+  margin: 0 !important;
+  padding: 0 2rem 0 1rem !important;
+  border: 0 !important;
+  border-left: 1px solid #2563eb !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #425466 !important;
+  transform: none !important;
+}
+
+html body #app .global-data-section .global-marketing-icon,
+html body #app .global-data-section .global-marketing-accent {
+  display: none !important;
+}
+
+html body #app .global-data-section .global-marketing-head h3 {
+  margin: 0 0 0.7rem !important;
+  color: #2563eb !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+}
+
+html body #app .global-data-section .global-marketing-list,
+html body #app .global-data-section .global-marketing-list li {
+  color: #425466 !important;
+  font-size: 0.95rem !important;
+  font-weight: 400 !important;
+  line-height: 1.55 !important;
+}
+
+@media (max-width: 768px) {
+  html body #app .global-data-section {
+    padding: 5rem 0 !important;
+  }
+
+  html body #app .global-data-section .global-data-container {
+    width: min(calc(100% - 2.5rem), 1060px) !important;
+  }
+
+  html body #app .global-data-section .global-data-title {
+    font-size: 2rem !important;
+  }
+
+  html body #app .global-data-section .global-data-subtitle,
+  html body #app .global-data-section .global-data-description {
+    font-size: 1rem !important;
+  }
+
+  html body #app .global-data-section .global-stats-row,
+  html body #app .global-data-section .global-marketing-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    margin-top: 3rem !important;
+  }
+}
+
+/* Home: close the integrations section at its content instead of leaving a muted strip above the CTA. */
+html body #app .landing-page-wrapper .landing-page > section.saas-platform-section,
+html body #app .landing-page-wrapper .landing-page > section.saas-platform-section .invoices-section {
+  margin-bottom: 0 !important;
+  background: #f9fafc !important;
+  background-color: #f9fafc !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.saas-platform-section {
+  padding-bottom: 32px !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.saas-platform-section .invoices-section {
+  padding-bottom: 0 !important;
+}
+
+@media (min-width: 769px) {
+  html body #app .landing-page-wrapper .landing-page > section.saas-platform-section {
+    margin-bottom: 0 !important;
+  }
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-stripe-title);
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: var(--font-family-sohne);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-family-sohne);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+  color: var(--color-stripe-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+input.invalid-input {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.input-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Checkbox styles */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+/* Link styles - Stripe-like */
+a {
+  color: var(--color-stripe-text);
+  text-decoration: none;
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: 15px;
+  line-height: var(--line-height-loose);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-stripe-title);
+  text-decoration: none;
+}
+
+/* Button styles */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s;
+  font-family: var(--font-family-sohne);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Stripe Typography Utility Classes */
+.font-sohne {
+  font-family: var(--font-family-sohne);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-weight-stripe {
+  font-weight: var(--font-weight-normal);
+}
+
+.text-stripe {
+  color: var(--color-stripe-text);
+}
+
+.text-stripe-sm {
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.text-stripe-base {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--color-stripe-text);
+}
+
+.text-stripe-lg {
+  font-size: var(--font-size-lead);
+  line-height: var(--line-height-lead);
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.text-stripe-xl {
+  font-size: calc(var(--font-size-lead) + 4px);
+  line-height: calc(var(--line-height-lead) + 6px);
+  letter-spacing: -0.022em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Global typography enhancements - Stripe style */
+h1, .stripe-hero {
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-hero);
+  line-height: var(--line-height-hero);
+  letter-spacing: -0.03em;
+  color: var(--color-stripe-title);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h2, .stripe-heading {
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-heading);
+  line-height: var(--line-height-heading);
+  letter-spacing: -0.025em;
+  color: var(--color-stripe-title);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h3, .stripe-subheading {
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-subheading);
+  line-height: var(--line-height-subheading);
+  letter-spacing: -0.02em;
+  color: var(--color-stripe-title);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h4, h5, h6, .stripe-label {
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: -0.015em;
+  color: var(--color-stripe-title);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+p, span, div, li, label, input, textarea, select {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  color: var(--color-stripe-text);
+  line-height: var(--line-height-base);
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-base);
+}
+
+/* Buttons should not inherit text color - they have their own styles */
+button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  line-height: var(--line-height-base);
+}
+
+/* Refine heavy font weights globally - Stripe style */
+* {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  /* Additional antialiasing properties */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-stroke: 0.45px transparent;
+}
+
+/* Global font weight refinement - reduce heavy weights for cleaner Stripe-style typography */
+.font-weight-700, [style*="font-weight: 700"],
+.font-weight-800, [style*="font-weight: 800"],
+.font-weight-900, [style*="font-weight: 900"] {
+  font-weight: 600 !important;
+}
+
+/* Headings with heavy weights */
+h1[style*="font-weight: 900"],
+h1[style*="font-weight:800"],
+h1[style*="font-weight:700"],
+h2[style*="font-weight: 900"],
+h2[style*="font-weight:800"],
+h2[style*="font-weight:700"],
+h3[style*="font-weight: 900"],
+h3[style*="font-weight:800"],
+h3[style*="font-weight:700"],
+h4[style*="font-weight: 900"],
+h4[style*="font-weight:800"],
+h4[style*="font-weight:700"] {
+  font-weight: 600 !important;
+}
+
+/* Beautiful typography for common UI elements */
+.nav-link, .dropdown-link, .button, .btn {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* Card titles and section headers */
+.card-title, .section-title, .feature-title, .cta-title, .cta-col-title {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.02em;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family-sohne);
+  color: var(--color-stripe-title);
+}
+
+/* Body text refinement */
+.hero-title, .hero-headline, .headline {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.03em;
+  font-family: var(--font-family-sohne);
+  font-weight: var(--font-weight-normal);
+  font-size: var(--font-size-hero);
+  line-height: var(--line-height-hero);
+  color: var(--color-stripe-title);
+}
+
+/* List items */
+li, ul, ol {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Code and monospace */
+code, pre, .code, .mono {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0;
+}
+
+/* Table typography */
+table, th, td {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+th {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Badge and tag typography */
+.badge, .tag, .chip, .label {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* Menu and dropdown typography */
+.menu-item, .dropdown-item, .list-item {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Form typography enhancements */
+textarea, select {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Alert and notification typography */
+.alert, .notification, .toast, .message {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Dashboard and card typography */
+.dashboard-title, .page-title, .card-header, .panel-title {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* Statistics and metrics */
+.stat-value, .metric-value, .kpi-value, .number {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+/* Navigation typography */
+.nav-item, .menu-link, .sidebar-link {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Button typography refinement */
+.btn-primary, .btn-secondary, .btn-outline, button[type="submit"], button[type="button"] {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* Ensure primary buttons have white text */
+.btn-primary,
+.btn-primary * {
+  color: #ffffff !important;
+}
+
+/* Card buttons should have white text */
+.card-button,
+.card-button * {
+  color: #ffffff !important;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* Additional antialiasing for SVG and images */
+img, svg, canvas, video {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Antialiasing for all interactive elements */
+button, a, input, textarea, select, label, [role="button"], [tabindex] {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Antialiasing for Vue components */
+.v-application,
+.v-application *,
+.v-application *::before,
+.v-application *::after {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  .text-stripe-sm {
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  .text-stripe-base {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  .text-stripe-lg {
+    font-size: var(--font-size-lead);
+    line-height: var(--line-height-lead);
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+}
+
+/* Stripe-inspired polish for products + solutions pages */
+.stripe-polish .landing-page,
+.stripe-polish .fin-light-page,
+.stripe-polish .saas-page {
+  background:
+    radial-gradient(900px 480px at 0% 0%, rgba(59, 130, 246, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(14, 165, 233, 0.08), transparent 62%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 54%, #f8fafc 100%);
+}
+
+.stripe-polish .hero-title {
+  letter-spacing: -0.04em !important;
+  line-height: 0.95 !important;
+}
+
+.stripe-polish .hero-description {
+  color: #334155 !important;
+  max-width: 60ch !important;
+}
+
+.stripe-polish .feature-card,
+.stripe-polish .api-terminal-card,
+.stripe-polish .dashboard-preview,
+.stripe-polish .payment-form-card,
+.stripe-polish .accounting-track-card,
+.stripe-polish .fin-light-main-card,
+.stripe-polish .fin-light-side-card,
+.stripe-polish .fin-light-platform-grid article,
+.stripe-polish .fin-light-caps-grid article,
+.stripe-polish .saas-feature-card,
+.stripe-polish .saas-core-main,
+.stripe-polish .saas-core-side {
+  border-radius: 20px !important;
+  border-color: #dbe4ef !important;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04) !important;
+}
+
+.stripe-polish .feature-card:hover,
+.stripe-polish .api-terminal-card:hover,
+.stripe-polish .dashboard-preview:hover,
+.stripe-polish .saas-feature-card:hover {
+  transform: translateY(-4px) !important;
+}
+
+.stripe-polish .btn-primary,
+.stripe-polish .cta-primary,
+.stripe-polish .signup-btn,
+.stripe-polish .fin-light-btn-primary,
+.stripe-polish .saas-btn-primary {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 52%, #0ea5e9 100%) !important;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24) !important;
+}
+
+.stripe-polish .btn-secondary,
+.stripe-polish .cta-secondary,
+.stripe-polish .fin-light-btn-secondary,
+.stripe-polish .saas-btn-secondary {
+  border-color: #d1d9e6 !important;
+  background: #ffffff !important;
+}
+
+.stripe-polish .section-title,
+.stripe-polish .global-data-title,
+.stripe-polish .cta-title,
+.stripe-polish .fin-light-caps-head h2,
+.stripe-polish .fin-light-platform-head h2,
+.stripe-polish .saas-hero-copy h1 {
+  letter-spacing: -0.035em !important;
+}
+
+.stripe-polish .section-description,
+.stripe-polish .global-data-description,
+.stripe-polish .cta-sub,
+.stripe-polish .fin-light-caps-head p,
+.stripe-polish .fin-light-platform-head p,
+.stripe-polish .saas-hero-copy p {
+  color: #475569 !important;
+}
+
+.stripe-polish .cta-section {
+  border-radius: 32px 32px 0 0;
+  overflow: hidden;
+}
+
+.stripe-polish .dropdown-link {
+  border-radius: 12px !important;
+}
+
+@media (max-width: 768px) {
+  .stripe-polish .feature-card,
+  .stripe-polish .api-terminal-card,
+  .stripe-polish .dashboard-preview,
+  .stripe-polish .payment-form-card,
+  .stripe-polish .accounting-track-card,
+  .stripe-polish .fin-light-main-card,
+  .stripe-polish .fin-light-side-card,
+  .stripe-polish .fin-light-platform-grid article,
+  .stripe-polish .fin-light-caps-grid article,
+  .stripe-polish .saas-feature-card,
+  .stripe-polish .saas-core-main,
+  .stripe-polish .saas-core-side {
+    border-radius: 18px !important;
+  }
+}
+
+/* Stripe-inspired pass v2: stronger layout language across products/solutions */
+.stripe-polish .hero-section,
+.stripe-polish .saas-hero,
+.stripe-polish .fin-light-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.stripe-polish .hero-section::after,
+.stripe-polish .saas-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 64px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(248, 250, 252, 0.9) 100%);
+  pointer-events: none;
+}
+
+.stripe-polish .hero-background .gradient-orb,
+.stripe-polish .saas-hero-glow {
+  filter: blur(2px) saturate(1.08);
+  animation: stripeOrbFloat 12s ease-in-out infinite;
+}
+
+.stripe-polish .hero-background .orb-2,
+.stripe-polish .saas-hero-glow-b {
+  animation-delay: 1.8s;
+}
+
+.stripe-polish .hero-background .orb-3 {
+  animation-delay: 3.2s;
+}
+
+@keyframes stripeOrbFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+  50% { transform: translateY(-18px) scale(1.03); opacity: 1; }
+}
+
+.stripe-polish .hero-actions,
+.stripe-polish .saas-hero-actions {
+  gap: 0.75rem !important;
+}
+
+.stripe-polish .hero-actions .btn-primary,
+.stripe-polish .hero-actions .btn-secondary,
+.stripe-polish .saas-hero-actions .saas-btn-primary,
+.stripe-polish .saas-hero-actions .saas-btn-secondary,
+.stripe-polish .cta-actions .cta-primary,
+.stripe-polish .cta-actions .cta-secondary {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.stripe-polish .hero-stats .stat-item,
+.stripe-polish .fin-light-stats article {
+  border-radius: 16px !important;
+  border: 1px solid #dbe4ef !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+}
+
+.stripe-polish .feature-icon,
+.stripe-polish .saas-feature-icon,
+.stripe-polish .fin-light-main-card .chip {
+  border-radius: 12px !important;
+}
+
+.stripe-polish .features-section,
+.stripe-polish .fin-light-platform,
+.stripe-polish .fin-light-caps {
+  position: relative;
+}
+
+.stripe-polish .features-section::before,
+.stripe-polish .fin-light-platform::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(700px 260px at 10% 0%, rgba(37, 99, 235, 0.06), transparent 70%),
+    radial-gradient(760px 260px at 90% 0%, rgba(14, 165, 233, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.stripe-polish .global-data-section {
+  border-radius: 28px 28px 0 0 !important;
+  overflow: hidden;
+}
+
+.stripe-polish .global-data-section .global-data-container,
+.stripe-polish .cta-container,
+.stripe-polish .saas-container,
+.stripe-polish .fin-light-shell {
+  width: min(1240px, 100% - 2.6rem) !important;
+}
+
+.stripe-polish .cta-promo-column,
+.stripe-polish .fin-light-contact-side,
+.stripe-polish .saas-core-side {
+  border-radius: 16px !important;
+  border: 1px solid rgba(226, 232, 240, 0.28) !important;
+}
+
+.stripe-polish .cta-promo-title,
+.stripe-polish .feature-title,
+.stripe-polish .global-data-subtitle,
+.stripe-polish .fin-light-platform-grid h3,
+.stripe-polish .fin-light-caps-grid h3,
+.stripe-polish .saas-feature-card h3 {
+  letter-spacing: -0.015em !important;
+}
+
+.stripe-polish .api-terminal-header,
+.stripe-polish .preview-header,
+.stripe-polish .saas-console-head {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%) !important;
+}
+
+.stripe-polish .api-terminal-body,
+.stripe-polish .preview-content,
+.stripe-polish .saas-console-body {
+  background: #ffffff !important;
+}
+
+@media (max-width: 1024px) {
+  .stripe-polish .global-data-section .global-data-container,
+  .stripe-polish .cta-container,
+  .stripe-polish .saas-container,
+  .stripe-polish .fin-light-shell {
+    width: min(1240px, 100% - 1.5rem) !important;
+  }
+}
+
+/* Stripe-inspired pass v3: section rhythm + diagonal transitions */
+.stripe-polish .landing-page > section,
+.stripe-polish .fin-light-page > section,
+.stripe-polish .saas-page > section {
+  position: relative;
+}
+
+.stripe-polish .landing-page > section:not(:first-child),
+.stripe-polish .fin-light-page > section:not(:first-child),
+.stripe-polish .saas-page > section:not(:first-child) {
+  margin-top: -1px;
+}
+
+.stripe-polish .features-section,
+.stripe-polish .saas-platform-section,
+.stripe-polish .fin-light-platform,
+.stripe-polish .fin-light-caps {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.stripe-polish .features-section::after,
+.stripe-polish .saas-platform-section::after,
+.stripe-polish .fin-light-platform::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -42px;
+  height: 44px;
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0), rgba(248, 250, 252, 0.95));
+  transform: skewY(-1.4deg);
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.stripe-polish .section-header,
+.stripe-polish .fin-light-platform-head,
+.stripe-polish .fin-light-caps-head {
+  max-width: 760px !important;
+}
+
+.stripe-polish .section-description,
+.stripe-polish .dev-tools-subtitle,
+.stripe-polish .invoices-section-description,
+.stripe-polish .fin-light-platform-head p,
+.stripe-polish .fin-light-caps-head p {
+  font-size: clamp(0.98rem, 1.3vw, 1.08rem) !important;
+  line-height: 1.72 !important;
+}
+
+.stripe-polish .dev-tools-title,
+.stripe-polish .invoices-title,
+.stripe-polish .fin-light-platform-head h2,
+.stripe-polish .fin-light-caps-head h2 {
+  line-height: 1.04 !important;
+}
+
+.stripe-polish .payment-method,
+.stripe-polish .dev-tool-item {
+  border-radius: 999px !important;
+  border: 1px solid #dbe4ef !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+.stripe-polish .payment-method:hover,
+.stripe-polish .dev-tool-item:hover {
+  transform: translateY(-2px) !important;
+}
+
+.stripe-polish .country-tab {
+  border-radius: 999px !important;
+}
+
+.stripe-polish .accounting-table-header,
+.stripe-polish .api-terminal-header,
+.stripe-polish .preview-header {
+  border-bottom-color: #dbe4ef !important;
+}
+
+.stripe-polish .cta-light-ray {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .stripe-polish .features-section,
+  .stripe-polish .saas-platform-section,
+  .stripe-polish .fin-light-platform,
+  .stripe-polish .fin-light-caps {
+    padding-top: 3.3rem !important;
+    padding-bottom: 3.6rem !important;
+  }
+
+  .stripe-polish .features-section::after,
+  .stripe-polish .saas-platform-section::after,
+  .stripe-polish .fin-light-platform::after {
+    top: -24px;
+    height: 26px;
+    transform: skewY(-1deg);
+  }
+}
+
+/* Stripe-inspired pass v4: high-priority visual system across products/solutions */
+.stripe-polish .landing-page .hero-section,
+.stripe-polish .saas-page .saas-hero,
+.stripe-polish .fin-light-page .fin-light-hero {
+  padding-top: 7.4rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.stripe-polish .landing-page .hero-container,
+.stripe-polish .landing-page .global-data-container,
+.stripe-polish .landing-page .invoices-container,
+.stripe-polish .landing-page .cta-container,
+.stripe-polish .saas-container,
+.stripe-polish .fin-light-shell {
+  max-width: 1260px !important;
+}
+
+.stripe-polish .landing-page .hero-title,
+.stripe-polish .saas-page .saas-hero-copy h1,
+.stripe-polish .fin-light-page .fin-light-copy h1 {
+  font-weight: 760 !important;
+  letter-spacing: -0.048em !important;
+  line-height: 0.92 !important;
+}
+
+.stripe-polish .landing-page .hero-description,
+.stripe-polish .saas-page .saas-hero-copy p,
+.stripe-polish .fin-light-page .fin-light-copy p {
+  font-size: 1.08rem !important;
+  color: #334155 !important;
+}
+
+.stripe-polish .landing-page .dashboard-preview,
+.stripe-polish .landing-page .api-terminal-card,
+.stripe-polish .landing-page .accounting-track-card,
+.stripe-polish .landing-page .feature-card,
+.stripe-polish .saas-page .saas-feature-card,
+.stripe-polish .saas-page .saas-core-main,
+.stripe-polish .saas-page .saas-core-side,
+.stripe-polish .fin-light-page .fin-light-main-card,
+.stripe-polish .fin-light-page .fin-light-side-card,
+.stripe-polish .fin-light-page .fin-light-platform-grid article,
+.stripe-polish .fin-light-page .fin-light-caps-grid article {
+  border: 1px solid #d7e0ec !important;
+  border-radius: 22px !important;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08), 0 8px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+.stripe-polish .landing-page .feature-card:hover,
+.stripe-polish .landing-page .dashboard-preview:hover,
+.stripe-polish .landing-page .api-terminal-card:hover,
+.stripe-polish .saas-page .saas-feature-card:hover {
+  transform: translateY(-6px) !important;
+}
+
+.stripe-polish .landing-page .btn-primary,
+.stripe-polish .landing-page .cta-primary,
+.stripe-polish .landing-page .signup-btn,
+.stripe-polish .saas-page .saas-btn-primary,
+.stripe-polish .fin-light-page .fin-light-btn-primary {
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #0ea5e9 100%) !important;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28) !important;
+}
+
+.stripe-polish .landing-page .btn-secondary,
+.stripe-polish .landing-page .cta-secondary,
+.stripe-polish .saas-page .saas-btn-secondary,
+.stripe-polish .fin-light-page .fin-light-btn-secondary {
+  border-radius: 12px !important;
+  border: 1px solid #cfd9e6 !important;
+}
+
+.stripe-polish .landing-page .global-data-section,
+.stripe-polish .landing-page .cta-section {
+  border-radius: 34px 34px 0 0 !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 768px) {
+  .stripe-polish .landing-page .hero-section,
+  .stripe-polish .saas-page .saas-hero,
+  .stripe-polish .fin-light-page .fin-light-hero {
+    padding-top: 5.6rem !important;
+    padding-bottom: 3.6rem !important;
+  }
+
+  .stripe-polish .landing-page .hero-title,
+  .stripe-polish .saas-page .saas-hero-copy h1,
+  .stripe-polish .fin-light-page .fin-light-copy h1 {
+    letter-spacing: -0.032em !important;
+  }
+
+  .stripe-polish .landing-page .dashboard-preview,
+  .stripe-polish .landing-page .api-terminal-card,
+  .stripe-polish .landing-page .accounting-track-card,
+  .stripe-polish .landing-page .feature-card,
+  .stripe-polish .saas-page .saas-feature-card,
+  .stripe-polish .saas-page .saas-core-main,
+  .stripe-polish .saas-page .saas-core-side,
+  .stripe-polish .fin-light-page .fin-light-main-card,
+  .stripe-polish .fin-light-page .fin-light-side-card,
+  .stripe-polish .fin-light-page .fin-light-platform-grid article,
+  .stripe-polish .fin-light-page .fin-light-caps-grid article {
+    border-radius: 18px !important;
+  }
+}
+
+/* Stripe-inspired pass v5: unmistakable hero language */
+.stripe-polish .landing-page .hero-container {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) !important;
+  gap: 2.4rem !important;
+}
+
+.stripe-polish .landing-page .hero-background::before,
+.stripe-polish .saas-page .saas-hero::before,
+.stripe-polish .fin-light-page .fin-light-hero::before {
+  content: '';
+  position: absolute;
+  top: -120px;
+  right: -120px;
+  width: 420px;
+  height: 220px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(14, 165, 233, 0.14));
+  transform: rotate(-18deg);
+  border-radius: 24px;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.stripe-polish .landing-page .hero-title,
+.stripe-polish .saas-page .saas-hero-copy h1,
+.stripe-polish .fin-light-page .fin-light-copy h1 {
+  max-width: 13.5ch !important;
+}
+
+.stripe-polish .landing-page .section-header,
+.stripe-polish .fin-light-page .fin-light-platform-head,
+.stripe-polish .fin-light-page .fin-light-caps-head {
+  margin-bottom: 3.2rem !important;
+}
+
+.stripe-polish .landing-page .section-title,
+.stripe-polish .landing-page .dev-tools-title,
+.stripe-polish .landing-page .invoices-title,
+.stripe-polish .landing-page .cta-title,
+.stripe-polish .fin-light-page .fin-light-platform-head h2,
+.stripe-polish .fin-light-page .fin-light-caps-head h2,
+.stripe-polish .saas-page .saas-section-head h2 {
+  font-weight: 740 !important;
+}
+
+@media (max-width: 960px) {
+  .stripe-polish .landing-page .hero-container {
+    grid-template-columns: 1fr !important;
+    gap: 1.8rem !important;
+  }
+
+  .stripe-polish .landing-page .hero-background::before,
+  .stripe-polish .saas-page .saas-hero::before,
+  .stripe-polish .fin-light-page .fin-light-hero::before {
+    width: 300px;
+    height: 160px;
+    right: -90px;
+    top: -80px;
+  }
+}
+
+/* CTA simplification pass: remove glow + pull section up across tabs */
+.stripe-polish .landing-page .cta-section,
+.stripe-polish .saas-page .cta-section,
+.stripe-polish .fin-light-page .cta-section,
+.landing-page .cta-section,
+.saas-page .cta-section,
+.fin-light-page .cta-section {
+  margin-top: clamp(2.4rem, 4.5vw, 3.8rem) !important;
+  margin-bottom: clamp(2rem, 4vw, 3.2rem) !important;
+  padding-top: clamp(1.4rem, 2.8vw, 2.2rem) !important;
+  padding-bottom: clamp(1.2rem, 2.6vw, 2rem) !important;
+}
+
+.stripe-polish .landing-page .cta-primary,
+.stripe-polish .saas-page .cta-primary,
+.stripe-polish .fin-light-page .cta-primary,
+.landing-page .cta-primary,
+.saas-page .cta-primary,
+.fin-light-page .cta-primary {
+  background: #2563eb !important;
+  border: 1px solid #2563eb !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.stripe-polish .landing-page .cta-primary:hover,
+.stripe-polish .saas-page .cta-primary:hover,
+.stripe-polish .fin-light-page .cta-primary:hover,
+.landing-page .cta-primary:hover,
+.saas-page .cta-primary:hover,
+.fin-light-page .cta-primary:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.stripe-polish .landing-page .cta-secondary,
+.stripe-polish .saas-page .cta-secondary,
+.stripe-polish .fin-light-page .cta-secondary,
+.landing-page .cta-secondary,
+.saas-page .cta-secondary,
+.fin-light-page .cta-secondary {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(148, 163, 184, 0.65) !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.stripe-polish .landing-page .cta-secondary:hover,
+.stripe-polish .saas-page .cta-secondary:hover,
+.stripe-polish .fin-light-page .cta-secondary:hover,
+.landing-page .cta-secondary:hover,
+.saas-page .cta-secondary:hover,
+.fin-light-page .cta-secondary:hover {
+  background: #f8fafc !important;
+  border-color: rgba(100, 116, 139, 0.75) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+@media (max-width: 900px) {
+  .stripe-polish .landing-page .cta-section,
+  .stripe-polish .saas-page .cta-section,
+  .stripe-polish .fin-light-page .cta-section,
+  .landing-page .cta-section,
+  .saas-page .cta-section,
+  .fin-light-page .cta-section {
+    margin-bottom: 1.8rem !important;
+    padding-bottom: 1rem !important;
+  }
+}
+
+/* Fix: accounting CTA button drifting too low / overflowing in product+solution banners */
+.landing-page .accounting-view-all,
+.saas-page .accounting-view-all,
+.fin-light-page .accounting-view-all {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+  min-height: 44px !important;
+  line-height: 1.2 !important;
+  align-self: stretch !important;
+}
+
+.landing-page .accounting-track-body,
+.saas-page .accounting-track-body,
+.fin-light-page .accounting-track-body {
+  gap: 12px !important;
+}
+
+/* ============================================
+   GLOBAL PREMIUM TYPOGRAPHY OVERRIDES
+   ============================================ */
+:root {
+  --font-primary: "sohne-var", "Söhne", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-sohne: var(--font-primary);
+
+  --text-primary: #0a2540;
+  --text-secondary: #425466;
+  --text-muted: #697386;
+
+  --heading-weight: 500;
+  --body-weight: 400;
+  --emphasis-weight: 500;
+
+  --letter-tight: -0.02em;
+  --letter-normal: -0.01em;
+}
+
+html,
+body,
+#app,
+.v-application {
+  font-family: var(--font-primary) !important;
+  color: var(--text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--heading-weight) !important;
+  letter-spacing: var(--letter-tight) !important;
+  line-height: 1.1 !important;
+  color: var(--text-primary) !important;
+}
+
+h1 {
+  font-size: clamp(36px, 5vw, 56px) !important;
+}
+
+h2 {
+  font-size: clamp(28px, 3vw, 34px) !important;
+}
+
+h3 {
+  font-size: clamp(22px, 2vw, 26px) !important;
+}
+
+p {
+  font-weight: var(--body-weight) !important;
+  line-height: 1.65 !important;
+  color: var(--text-secondary) !important;
+  font-size: 16px !important;
+  letter-spacing: var(--letter-normal) !important;
+}
+
+/* Stripe-style hero gradient text */
+.hero-title {
+  font-weight: var(--heading-weight) !important;
+  letter-spacing: var(--letter-tight) !important;
+  background: linear-gradient(90deg, #2563eb, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Keep line length controlled for premium readability */
+.container {
+  max-width: 960px !important;
+  margin: 0 auto !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+/* Button typography discipline */
+.button,
+button,
+.btn,
+.v-btn {
+  font-weight: var(--emphasis-weight) !important;
+  letter-spacing: var(--letter-normal) !important;
+  font-size: 15px !important;
+}
+
+/* Enforce weight discipline globally */
+[style*="font-weight: 300"],
+.font-weight-300 {
+  font-weight: 400 !important;
+}
+
+[style*="font-weight: 700"],
+[style*="font-weight: 800"],
+[style*="font-weight: 900"],
+.font-weight-700,
+.font-weight-800,
+.font-weight-900 {
+  font-weight: 600 !important;
+}
+/* Shared, solid-color CTAs for solution heroes */
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions.solution-hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  grid-template-columns: none !important;
+  gap: 0.85rem !important;
+  max-width: 440px !important;
+  margin-top: 2rem !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn {
+  width: auto !important;
+  min-width: 178px !important;
+  min-height: 46px !important;
+  padding: 0.72rem 1.05rem !important;
+  border-radius: 11px !important;
+  color: #ffffff !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn {
+  border: 1px solid #174a78 !important;
+  background: #174a78 !important;
+  box-shadow:
+    0 10px 22px rgba(23, 74, 120, 0.22),
+    0 3px 8px rgba(15, 23, 42, 0.1) !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn {
+  border: 1px solid #0f766e !important;
+  background: #0f766e !important;
+  box-shadow:
+    0 10px 22px rgba(15, 118, 110, 0.2),
+    0 3px 8px rgba(15, 23, 42, 0.08) !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn::before,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn::before {
+  background: none !important;
+  opacity: 0 !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn span,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn svg,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn .btn-chevron,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn span,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn svg,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn .btn-chevron {
+  color: #ffffff !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn:hover,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .solution-join-btn:focus-visible {
+  border-color: #123b62 !important;
+  background: #123b62 !important;
+  box-shadow:
+    0 14px 28px rgba(18, 59, 98, 0.26),
+    0 4px 10px rgba(15, 23, 42, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn:hover,
+.landing-page.ecommerce-page .ecommerce-hero .hero-actions .live-demo-btn:focus-visible {
+  border-color: #0b5f59 !important;
+  background: #0b5f59 !important;
+  box-shadow:
+    0 14px 28px rgba(11, 95, 89, 0.24),
+    0 4px 10px rgba(15, 23, 42, 0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+@media (max-width: 600px) {
+  .landing-page.ecommerce-page .ecommerce-hero .hero-actions.solution-hero-actions,
+  .landing-page.ecommerce-page .ecommerce-hero .hero-actions.solution-hero-actions .solution-join-btn,
+  .landing-page.ecommerce-page .ecommerce-hero .hero-actions.solution-hero-actions .live-demo-btn {
+    width: 100% !important;
+    max-width: 360px !important;
+  }
+}
+
+/* =========================================================
+   Shared public-site visual system: sober, spacious, raised.
+   ========================================================= */
+
+html body #app :is(
+  .landing-page-wrapper,
+  .pricing-page,
+  .contact-form-wrapper,
+  .contact-support-wrapper,
+  .faq-page,
+  .brand-page,
+  .logos-page-wrapper,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) {
+  --color-stripe-title: var(--hq-navy-900);
+  --color-stripe-text: var(--hq-navy-900);
+  color: var(--hq-navy-900) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(
+  .section-title,
+  .feature-title,
+  .card-title,
+  .plan-card-copy h2,
+  .plan-card-copy h3,
+  .pricing-compare-title,
+  .monitoring-section-title
+) {
+  color: var(--hq-navy-900) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  text-shadow: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(
+  .section-description,
+  .feature-description,
+  .card-text,
+  .plan-subcopy,
+  .support-card p,
+  .contact-card p
+) {
+  color: var(--hq-text-secondary) !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  text-shadow: none !important;
+}
+
+html body #app .landing-page :is(
+  .features-section,
+  .finance-included-section,
+  .saas-platform-section,
+  .hlog-benefits-section,
+  .modular-runtime-section,
+  .dashcole-deploy-section,
+  .dashcole-blog-section,
+  .stripe-dev-section
+),
+html body #app :is(
+  .pricing-page .plan-block,
+  .pricing-page .stripe-pricing-explorer,
+  .pricing-page .pricing-compare-section,
+  .contact-page,
+  .faq-page .faq-section-wrapper
+) {
+  padding-top: clamp(6rem, 8vw, 8rem) !important;
+  padding-bottom: clamp(6rem, 8vw, 8rem) !important;
+}
+
+html body #app .landing-page :is(
+  .features-section,
+  .finance-included-section,
+  .saas-platform-section,
+  .hlog-benefits-section,
+  .modular-runtime-section,
+  .dashcole-deploy-section,
+  .dashcole-blog-section,
+  .stripe-dev-section
+) {
+  background: var(--hq-surface-muted) !important;
+  background-image: none !important;
+}
+
+html body #app .landing-page .section-header {
+  width: min(100%, 780px) !important;
+  max-width: 780px !important;
+  margin-right: auto !important;
+  margin-bottom: 3.25rem !important;
+  margin-left: 0 !important;
+  text-align: left !important;
+}
+
+html body #app .landing-page .section-header .section-description {
+  max-width: 682px !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .feature-card,
+  .stripe-feature-card,
+  .finance-included-card,
+  .saas-included-card,
+  .commerce-channel-card,
+  .monitoring-detail-card,
+  .support-card,
+  .contact-card,
+  .contact-form-card,
+  .about-card,
+  .logo-card,
+  .plan-card,
+  .stripe-offer-card,
+  .saas-ready-card,
+  .global-marketing-card,
+  .kpi-card,
+  .stat-card,
+  .tos-card,
+  .nf-card,
+  .login-card,
+  .signup-card,
+  .faq-panel,
+  .faq-search-shell,
+  .general-comm-section,
+  .dashcole-blog-card
+) {
+  border: 1px solid var(--hq-border) !important;
+  border-radius: var(--hq-radius-surface) !important;
+  background: var(--hq-surface) !important;
+  background-image: none !important;
+  box-shadow: var(--hq-shadow-raised) !important;
+  color: var(--hq-navy-900) !important;
+  transform: none !important;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(
+  .feature-card,
+  .stripe-feature-card,
+  .finance-included-card,
+  .saas-included-card,
+  .commerce-channel-card,
+  .monitoring-detail-card,
+  .support-card,
+  .contact-card,
+  .about-card,
+  .logo-card,
+  .plan-card,
+  .stripe-offer-card,
+  .saas-ready-card,
+  .kpi-card,
+  .stat-card,
+  .faq-panel,
+  .dashcole-blog-card
+):hover {
+  border-color: var(--hq-border-strong) !important;
+  box-shadow:
+    0 2px 4px rgba(10, 37, 64, 0.09),
+    0 8px 18px rgba(10, 37, 64, 0.07),
+    0 20px 38px rgba(10, 37, 64, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  transform: translateY(-2px) !important;
+}
+
+@media (min-width: 769px) {
+  html body #app .landing-page .hero-content .hero-actions {
+    width: max-content !important;
+    max-width: none !important;
+    flex-wrap: nowrap !important;
+  }
+}
+
+/* =========================================================
+   Public Web typography and spacing rhythm.
+   One Stripe-like system across marketing and account pages.
+   ========================================================= */
+html body #app :is(
+  .landing-page-wrapper,
+  .pricing-page,
+  .contact-form-wrapper,
+  .contact-support-wrapper,
+  .faq-page,
+  .brand-page,
+  .logos-page-wrapper,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) {
+  font-family: var(--hq-font-sans) !important;
+  font-size: 16px;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  font-variation-settings: 'wght' 400;
+  letter-spacing: var(--hq-body-tracking);
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  h1,
+  .hero-title,
+  .pricing-title,
+  .faq-title,
+  .contact-title,
+  .nf-title
+) {
+  color: var(--hq-navy-900) !important;
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 680 !important;
+  font-variation-settings: 'wght' 680 !important;
+  line-height: 1.04 !important;
+  letter-spacing: var(--hq-display-tracking) !important;
+  text-wrap: balance;
+  text-shadow: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  h2,
+  .section-title,
+  .monitoring-section-title,
+  .pricing-compare-title,
+  .invoices-title,
+  .cta-title
+) {
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 650 !important;
+  font-variation-settings: 'wght' 650 !important;
+  line-height: 1.12 !important;
+  letter-spacing: var(--hq-heading-tracking) !important;
+  text-wrap: balance;
+  text-shadow: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  h3,
+  h4,
+  .feature-title,
+  .card-title,
+  .stripe-feature-title,
+  .plan-card-title,
+  .invoices-section-title
+) {
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 650 !important;
+  font-variation-settings: 'wght' 650 !important;
+  line-height: 1.24 !important;
+  letter-spacing: -0.025em !important;
+  text-wrap: balance;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  p,
+  li,
+  .hero-description,
+  .section-description,
+  .feature-description,
+  .card-text,
+  .plan-subcopy
+) {
+  font-family: var(--hq-font-sans) !important;
+  line-height: 1.62 !important;
+  letter-spacing: var(--hq-body-tracking) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .hero-eyebrow,
+  .eyebrow,
+  .section-kicker,
+  .dashcole-section-kicker,
+  .pricing-kicker,
+  .overline
+) {
+  font-family: var(--hq-font-sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  font-variation-settings: 'wght' 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.085em !important;
+  text-transform: uppercase !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  label
+) {
+  font-family: var(--hq-font-sans) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-primary,
+  .btn-secondary,
+  .cta-primary,
+  .cta-secondary,
+  .primary-cta,
+  .secondary-cta,
+  button
+) {
+  font-weight: 600 !important;
+  font-variation-settings: 'wght' 600 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Shared gutters keep copy and grids on the same vertical rails. */
+html body #app .landing-page :is(
+  .hero-container,
+  .container,
+  .global-data-container,
+  .finance-included-container,
+  .integrations-banner-container,
+  .hlog-stream-container,
+  .stripe-container,
+  .invoices-container,
+  .cta-container,
+  .dashcole-blog-section-head,
+  .dashcole-blog-grid
+),
+html body #app :is(
+  .pricing-page .pricing-container,
+  .pricing-page .hero-inner,
+  .pricing-page .pricing-compare-container,
+  .contact-page .container,
+  .faq-page .faq-section-shell-wrapper,
+  .brand-page .hero-inner,
+  .logos-page .container,
+  .tos-page .tos-container
+) {
+  box-sizing: border-box !important;
+  width: min(100%, var(--hq-content-width)) !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  padding-right: var(--hq-page-gutter) !important;
+  padding-left: var(--hq-page-gutter) !important;
+}
+
+/* Consistent section cadence while preserving each page's composition. */
+html body #app .landing-page :is(
+  .features-section,
+  .finance-included-section,
+  .hlog-benefits-section,
+  .modular-runtime-section,
+  .dashcole-deploy-section,
+  .dashcole-blog-section,
+  .stripe-dev-section
+),
+html body #app :is(
+  .pricing-page .plan-block,
+  .pricing-page .stripe-pricing-explorer,
+  .pricing-page .pricing-compare-section,
+  .contact-page,
+  .faq-page .faq-section-wrapper
+) {
+  padding-top: var(--hq-section-space) !important;
+  padding-bottom: var(--hq-section-space) !important;
+}
+
+html body #app .landing-page :is(
+  .integrations-banner-section,
+  .finance-partners-cloud-section,
+  .hlog-stream-section
+) {
+  padding-top: var(--hq-section-space-compact) !important;
+  padding-bottom: var(--hq-section-space-compact) !important;
+}
+
+html body #app .landing-page :is(.section-header, .dashcole-blog-section-head) {
+  margin-bottom: clamp(2.75rem, 4vw, 4rem) !important;
+}
+
+html body #app .landing-page :is(.section-header, .hero-content) :is(
+  .hero-eyebrow,
+  .eyebrow,
+  .section-kicker,
+  .dashcole-section-kicker
+) {
+  display: inline-block;
+  margin-bottom: 0.9rem !important;
+}
+
+html body #app .landing-page .section-header .section-title {
+  margin-bottom: 1rem !important;
+}
+
+html body #app .landing-page .section-header .section-description {
+  max-width: 680px !important;
+  margin-top: 0 !important;
+}
+
+html body #app .landing-page .hero-content .hero-description {
+  max-width: 620px;
+  margin-top: 1.35rem !important;
+}
+
+html body #app .landing-page .hero-content .hero-actions {
+  margin-top: 2rem !important;
+}
+
+html body #app .landing-page :is(
+  .features-grid,
+  .finance-included-grid,
+  .stripe-features-grid,
+  .dashcole-blog-grid
+) {
+  gap: clamp(1rem, 2vw, 1.5rem) !important;
+}
+
+html body #app :is(
+  .contact-page,
+  .faq-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(label, .v-label) {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.01em !important;
+}
+
+html body #app :is(
+  .contact-page,
+  .faq-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(input, textarea, select) {
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.01em !important;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --hq-page-gutter: 1.25rem;
+    --hq-section-space: 4.75rem;
+    --hq-section-space-compact: 3.75rem;
+  }
+
+  html body #app :is(
+    .landing-page,
+    .pricing-page,
+    .contact-page,
+    .faq-page,
+    .brand-page,
+    .logos-page,
+    .tos-page,
+    .nf-page,
+    .login-wrapper,
+    .signup-wrapper
+  ) :is(h1, .hero-title, .pricing-title, .faq-title, .contact-title, .nf-title) {
+    line-height: 1.06 !important;
+    letter-spacing: -0.042em !important;
+  }
+}
+
+html body #app .landing-page .feature-card::before {
+  height: 2px !important;
+  border-radius: var(--hq-radius-surface) var(--hq-radius-surface) 0 0 !important;
+  background: var(--hq-navy-800) !important;
+}
+
+html body #app .landing-page .dashcole-blog-card {
+  --blog-card-accent: var(--hq-navy-800) !important;
+  --blog-card-bg: #ffffff !important;
+  --blog-card-topbar: var(--hq-navy-800) !important;
+  --blog-card-border: var(--hq-border) !important;
+  --blog-card-text: var(--hq-navy-900) !important;
+  --blog-card-muted: var(--hq-text-secondary) !important;
+  --blog-card-chip-bg: #edf4fa !important;
+  --blog-card-chip-border: #d9e5f0 !important;
+}
+
+html body #app .landing-page .dashcole-blog-card :is(h3, p, span) {
+  color: inherit !important;
+  text-shadow: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-primary,
+  .cta-primary,
+  .solution-join-btn,
+  .live-demo-btn,
+  .card-button,
+  .form-submit-button,
+  .stripe-contact-btn,
+  .faq-page-btn,
+  .main-btn,
+  .primary-cta
+) {
+  border: 1px solid var(--hq-navy-800) !important;
+  border-radius: var(--hq-radius-control) !important;
+  background: var(--hq-navy-800) !important;
+  background-image: none !important;
+  box-shadow: 0 2px 5px rgba(10, 58, 103, 0.18) !important;
+  color: #ffffff !important;
+  filter: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-secondary,
+  .cta-secondary,
+  .link-btn,
+  .secondary-cta
+) :is(span, svg, .btn-chevron) {
+  color: var(--hq-navy-900) !important;
+  -webkit-text-fill-color: var(--hq-navy-900) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-primary,
+  .cta-primary,
+  .solution-join-btn,
+  .live-demo-btn,
+  .card-button,
+  .form-submit-button,
+  .stripe-contact-btn,
+  .faq-page-btn,
+  .main-btn,
+  .primary-cta
+):hover {
+  border-color: var(--hq-navy-950) !important;
+  background: var(--hq-navy-950) !important;
+  box-shadow: 0 3px 7px rgba(6, 31, 54, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-secondary,
+  .cta-secondary,
+  .link-btn,
+  .secondary-cta
+) {
+  border: 1px solid var(--hq-border-strong) !important;
+  border-radius: var(--hq-radius-control) !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow: 0 1px 2px rgba(10, 37, 64, 0.06) !important;
+  color: var(--hq-navy-900) !important;
+  filter: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.feature-icon, .card-icon, .finance-included-card-icon, .saas-included-card-icon) {
+  border: 1px solid #d9e5f0 !important;
+  border-radius: 9px !important;
+  background: #edf4fa !important;
+  background-image: none !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96) !important;
+  color: var(--hq-navy-800) !important;
+}
+
+html body #app .pricing-page .plan-card-cta {
+  width: auto !important;
+  max-width: max-content !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body #app :is(.contact-page, .faq-page) :is(.bg-shape, .faq-bg-shape) {
+  display: none !important;
+}
+
+html body #app :is(.contact-page, .faq-main) {
+  background: var(--hq-surface-muted) !important;
+  background-image: none !important;
+}
+
+html body #app .contact-page :is(.custom-text-field, .custom-textarea) .v-field {
+  border: 1px solid var(--hq-border) !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  box-shadow: inset 0 1px 2px rgba(10, 37, 64, 0.04) !important;
+}
+
+html body #app .landing-page .hero-background .gradient-orb {
+  opacity: 0.16 !important;
+  filter: blur(72px) saturate(0.72) !important;
+}
+
+/* Preserve the original centered Home search heading. */
+html body #app .landing-page .features-section .dev-tools-header {
+  align-items: center !important;
+  text-align: center !important;
+}
+
+html body #app .landing-page .features-section .dev-tools-header :is(
+  .section-title,
+  .section-description
+) {
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center !important;
+}
+
+html body #app .landing-page .features-section .dev-tools-header .section-title {
+  background: linear-gradient(90deg, #0f172a 0%, #1d4ed8 45%, #0f172a 100%) !important;
+  background-size: 220% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Home feature grid: six related blue surfaces, ordered dark to light. */
+html body #app .landing-page .features-section .features-grid .feature-card {
+  --home-feature-blue: #0a2540;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+  background: var(--home-feature-blue) !important;
+  background-image: none !important;
+  box-shadow:
+    0 2px 5px rgba(6, 31, 54, 0.16),
+    0 10px 24px rgba(6, 31, 54, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(1) { --home-feature-blue: #0a2540; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(2) { --home-feature-blue: #0b3a67; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(3) { --home-feature-blue: #104a72; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(4) { --home-feature-blue: #155a84; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(5) { --home-feature-blue: #1b6994; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(6) { --home-feature-blue: #2378a5; }
+
+html body #app .landing-page .features-section .features-grid .feature-card:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 8px rgba(6, 31, 54, 0.16),
+    0 18px 38px rgba(6, 31, 54, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card::before {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.72), rgba(115, 190, 255, 0.82)) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card :is(
+  .feature-title,
+  .feature-title *
+) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card :is(
+  .feature-description,
+  li,
+  li::marker
+) {
+  color: rgba(255, 255, 255, 0.8) !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card .feature-icon {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card .feature-icon :is(
+  svg,
+  .feature-icon-img
+) {
+  color: #ffffff !important;
+  fill: currentColor !important;
+}
+
+html body #app .pricing-page :is(.primary-cta, .secondary-cta) {
+  min-height: 38px !important;
+  padding: 0.55rem 0.9rem !important;
+  border-radius: var(--hq-radius-control) !important;
+  text-decoration: none !important;
+}
+
+html body #app .pricing-page .plan-feature-list,
+html body #app .pricing-page .plan-feature-list li,
+html body #app .pricing-page .plan-feature-list li span {
+  color: var(--hq-text-secondary) !important;
+}
+
+html body #app .landing-page .section-header :is(.section-title, .section-title *) {
+  background: none !important;
+  color: var(--hq-navy-900) !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: var(--hq-navy-900) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.feature-icon, .card-icon, .finance-included-card-icon, .saas-included-card-icon) :is(svg, .feature-icon-img) {
+  color: var(--hq-navy-800) !important;
+  fill: currentColor !important;
+  filter: none !important;
+}
+
+@media (max-width: 768px) {
+  html body #app .landing-page :is(
+    .features-section,
+    .finance-included-section,
+    .saas-platform-section,
+    .hlog-benefits-section,
+    .modular-runtime-section,
+    .dashcole-deploy-section,
+    .dashcole-blog-section,
+    .stripe-dev-section
+  ),
+  html body #app :is(
+    .pricing-page .plan-block,
+    .pricing-page .stripe-pricing-explorer,
+    .pricing-page .pricing-compare-section
+  ) {
+    padding-top: 4.5rem !important;
+    padding-bottom: 4.5rem !important;
+  }
+}
+
+/* Final Talk to sales banners use one focused action. */
+html body #app .landing-page > section.cta-section .cta-actions.cta-actions--single {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  gap: 0 !important;
+}
+
+html body #app .landing-page > section.cta-section .cta-actions.cta-actions--single > .cta-primary {
+  width: 100% !important;
+}
+
+@media (max-width: 600px) {
+  html body #app .landing-page > section.cta-section .cta-actions.cta-actions--single {
+    max-width: 100% !important;
+  }
+}
+
+/* Stripe-inspired visual system: crisp icon tiles, white surfaces, and compact controls. */
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.feature-icon, .card-icon, .finance-included-card-icon, .saas-included-card-icon) {
+  display: inline-flex !important;
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid #cfe0f1 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #f8fbff 0%, #eaf3fb 100%) !important;
+  background-image: linear-gradient(145deg, #f8fbff 0%, #eaf3fb 100%) !important;
+  box-shadow:
+    0 5px 12px rgba(10, 58, 103, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+  color: var(--hq-navy-800) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.feature-icon, .card-icon, .finance-included-card-icon, .saas-included-card-icon)::after {
+  content: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.feature-icon, .card-icon, .finance-included-card-icon, .saas-included-card-icon) :is(svg, .feature-icon-img) {
+  width: 19px !important;
+  height: 19px !important;
+  color: currentColor !important;
+  fill: currentColor !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html body #app .landing-page .stripe-feature-icon {
+  display: inline-grid !important;
+  width: 42px !important;
+  height: 42px !important;
+  margin-bottom: 1.15rem !important;
+  place-items: center !important;
+  border: 1px solid #d6e2ef !important;
+  border-radius: 10px !important;
+  background: linear-gradient(145deg, #ffffff 0%, #edf5fc 100%) !important;
+  box-shadow:
+    0 5px 12px rgba(10, 58, 103, 0.07),
+    inset 0 1px 0 #ffffff !important;
+}
+
+html body #app .landing-page .stripe-feature-icon svg {
+  width: 21px !important;
+  height: 21px !important;
+}
+
+/* The six Home cards stay white; only their top bars and glyphs carry color. */
+html body #app .landing-page .features-section .features-grid .feature-card {
+  --home-feature-accent: #2563eb;
+  border: 1px solid #dce7f3 !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow:
+    0 2px 5px rgba(10, 37, 64, 0.06),
+    0 12px 28px rgba(10, 37, 64, 0.08),
+    inset 0 1px 0 #ffffff !important;
+  color: var(--hq-navy-900) !important;
+  transform: none !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(1) { --home-feature-accent: #2563eb; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(2) { --home-feature-accent: #0f766e; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(3) { --home-feature-accent: #0369a1; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(4) { --home-feature-accent: #ea580c; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(5) { --home-feature-accent: #dc2626; }
+html body #app .landing-page .features-section .features-grid .feature-card:nth-child(6) { --home-feature-accent: #0369a1; }
+
+html body #app .landing-page .features-section .features-grid .feature-card::before {
+  height: 4px !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: var(--home-feature-accent) !important;
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--home-feature-accent) 78%, #ffffff),
+    var(--home-feature-accent)
+  ) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card::after {
+  content: none !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card:hover {
+  border-color: color-mix(in srgb, var(--home-feature-accent) 30%, #dce7f3) !important;
+  box-shadow:
+    0 4px 8px rgba(10, 37, 64, 0.07),
+    0 18px 38px rgba(10, 37, 64, 0.11),
+    inset 0 1px 0 #ffffff !important;
+  transform: translateY(-4px) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card :is(
+  .feature-title,
+  .feature-title *
+) {
+  color: var(--hq-navy-900) !important;
+  -webkit-text-fill-color: var(--hq-navy-900) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card :is(
+  .feature-description,
+  li,
+  li::marker
+) {
+  color: var(--hq-text-secondary) !important;
+  -webkit-text-fill-color: var(--hq-text-secondary) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card .feature-icon {
+  border-color: color-mix(in srgb, var(--home-feature-accent) 24%, #dce7f3) !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow:
+    0 5px 12px color-mix(in srgb, var(--home-feature-accent) 12%, transparent),
+    inset 0 1px 0 #ffffff !important;
+  color: var(--home-feature-accent) !important;
+}
+
+html body #app .landing-page .features-section .features-grid .feature-card .feature-icon :is(
+  svg,
+  .feature-icon-img
+) {
+  color: var(--home-feature-accent) !important;
+  fill: currentColor !important;
+}
+
+/* Keep leading action icons small and precise instead of visually competing with labels. */
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary) .btn-icon {
+  width: 15px !important;
+  height: 15px !important;
+  flex: 0 0 15px !important;
+  opacity: 0.9 !important;
+  filter: none !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary) .btn-chevron {
+  margin-left: 0.1rem !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page
+) :is(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary):focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.24) !important;
+  outline-offset: 3px !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-primary,
+  .cta-primary,
+  .solution-join-btn,
+  .live-demo-btn,
+  .card-button,
+  .form-submit-button,
+  .stripe-contact-btn,
+  .faq-page-btn,
+  .main-btn,
+  .primary-cta
+) {
+  border-color: var(--hq-navy-800) !important;
+  background: var(--hq-navy-800) !important;
+  background-image: none !important;
+  box-shadow:
+    0 2px 0 var(--hq-navy-950),
+    0 7px 16px rgba(10, 58, 103, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-primary,
+  .cta-primary,
+  .solution-join-btn,
+  .live-demo-btn,
+  .card-button,
+  .form-submit-button,
+  .stripe-contact-btn,
+  .faq-page-btn,
+  .main-btn,
+  .primary-cta
+):hover {
+  border-color: var(--hq-navy-950) !important;
+  background: var(--hq-navy-950) !important;
+  box-shadow:
+    0 3px 0 #041725,
+    0 11px 22px rgba(6, 31, 54, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  transform: translateY(-2px) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-secondary,
+  .cta-secondary,
+  .link-btn,
+  .secondary-cta
+) {
+  border-color: var(--hq-border-strong) !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-shadow:
+    0 2px 0 rgba(113, 134, 154, 0.2),
+    0 6px 14px rgba(10, 37, 64, 0.08),
+    inset 0 1px 0 #ffffff !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(
+  .btn-secondary,
+  .cta-secondary,
+  .link-btn,
+  .secondary-cta
+):hover {
+  border-color: #aebfd0 !important;
+  background: #ffffff !important;
+  box-shadow:
+    0 3px 0 rgba(113, 134, 154, 0.22),
+    0 10px 20px rgba(10, 37, 64, 0.11),
+    inset 0 1px 0 #ffffff !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Why dashcole: two editorial columns on a dark navy Stripe-style field. */
+html body #app .landing-page > section.global-data-section {
+  position: relative !important;
+  margin-top: 0 !important;
+  padding: clamp(6rem, 8vw, 8rem) 0 !important;
+  overflow: hidden !important;
+  background: #061f36 !important;
+  background-image: linear-gradient(135deg, #061f36 0%, #0a2540 58%, #0b3a67 100%) !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+}
+
+html body #app .landing-page > section.global-data-section::before {
+  content: '' !important;
+  position: absolute !important;
+  top: clamp(5.8rem, 8vw, 7.5rem) !important;
+  left: max(1.25rem, calc((100vw - var(--hq-content-width)) / 2 + var(--hq-page-gutter) - 1rem)) !important;
+  width: 3px !important;
+  height: 52px !important;
+  border-radius: 999px !important;
+  background: #2563eb !important;
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.28) !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  pointer-events: none !important;
+}
+
+html body #app .landing-page > section.global-data-section .light-ray {
+  opacity: 0.22 !important;
+  background: linear-gradient(
+    180deg,
+    transparent 30%,
+    rgba(37, 99, 235, 0.12) 48%,
+    rgba(14, 165, 233, 0.1) 52%,
+    transparent 70%
+  ) !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-container {
+  width: min(100%, var(--hq-content-width)) !important;
+  max-width: var(--hq-content-width) !important;
+  margin: 0 auto !important;
+  padding: 0 var(--hq-page-gutter) !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr) !important;
+  gap: clamp(2.5rem, 5vw, 5rem) !important;
+  align-items: start !important;
+}
+
+html body #app .landing-page > section.global-data-section :is(
+  .global-data-intro,
+  .global-data-copy,
+  .global-data-proof
+) {
+  min-width: 0;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-intro {
+  padding-left: 1rem;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-eyebrow {
+  margin: 0 0 0.85rem !important;
+  color: #60a5fa !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-title {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(2rem, 3.4vw, 2.8rem) !important;
+  font-weight: 650 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.042em !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-subtitle {
+  margin: 0 0 1.15rem !important;
+  color: #dbeafe !important;
+  font-size: 1.05rem !important;
+  font-weight: 550 !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.018em !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-data-description {
+  margin: 0 !important;
+  color: rgba(226, 232, 240, 0.78) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.65 !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stats-row {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-item {
+  display: grid !important;
+  grid-template-columns: 30px 1fr !important;
+  min-height: 0 !important;
+  column-gap: 0.75rem !important;
+  align-items: center !important;
+  padding: 0.85rem 0 !important;
+  border-left: 0 !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16) !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-item:last-child {
+  border-bottom: 0 !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-icon {
+  display: grid !important;
+  grid-row: 1 / span 2 !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin: 0 !important;
+  place-items: center !important;
+  border: 1px solid rgba(96, 165, 250, 0.24) !important;
+  border-radius: 8px !important;
+  color: #60a5fa !important;
+  background: rgba(37, 99, 235, 0.1) !important;
+  font-size: 0.78rem !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-number {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: 0.95rem !important;
+  font-weight: 650 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.015em !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-label {
+  margin: 0.1rem 0 0 !important;
+  color: rgba(226, 232, 240, 0.72) !important;
+  font-size: 0.78rem !important;
+  line-height: 1.35 !important;
+}
+
+html body #app .landing-page > section.global-data-section .global-stat-divider {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  html body #app .landing-page > section.global-data-section .global-data-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-data-proof {
+    grid-column: 1 / -1;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-stats-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.25rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  html body #app .landing-page > section.global-data-section::before {
+    top: 4.6rem !important;
+    left: 1.25rem !important;
+    height: 38px !important;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-data-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-data-intro {
+    padding-left: 0.8rem;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-data-proof {
+    grid-column: auto;
+  }
+
+  html body #app .landing-page > section.global-data-section .global-stats-row {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+}
+
+/* Closing CTA: compact Stripe-like type scale with both columns top-aligned. */
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-container {
+  align-items: start !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-title {
+  margin-bottom: 1rem !important;
+  font-size: clamp(1.5rem, 2vw, 1.625rem) !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.03em !important;
+  white-space: nowrap;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-sub {
+  max-width: 620px !important;
+  margin-bottom: 1.25rem !important;
+  font-size: 1rem !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.012em !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-aside {
+  align-self: start !important;
+  padding-top: 0.2rem !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-aside-title {
+  margin-bottom: 0.55rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.015em !important;
+}
+
+html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-aside-text {
+  margin-bottom: 0.7rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.01em !important;
+}
+
+@media (max-width: 768px) {
+  html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-title {
+    font-size: 1.4rem !important;
+    white-space: normal;
+  }
+
+  html body #app .landing-page-wrapper .landing-page > section.cta-section .cta-aside {
+    margin-top: 2.5rem !important;
+    padding-top: 0 !important;
+  }
+}
+
+/* Final typography authority: page-local styles cannot fragment this rhythm. */
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(h1, .hero-title, .pricing-title, .faq-title, .contact-title, .nf-title) {
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 680 !important;
+  font-variation-settings: 'wght' 680 !important;
+  line-height: 1.04 !important;
+  letter-spacing: var(--hq-display-tracking) !important;
+  text-wrap: balance;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(h2, .section-title, .monitoring-section-title, .pricing-compare-title, .invoices-title, .cta-title) {
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 650 !important;
+  font-variation-settings: 'wght' 650 !important;
+  line-height: 1.12 !important;
+  letter-spacing: var(--hq-heading-tracking) !important;
+  text-wrap: balance;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(h3, h4, .feature-title, .card-title, .stripe-feature-title, .plan-card-title, .invoices-section-title) {
+  font-family: var(--hq-font-sans) !important;
+  font-weight: 650 !important;
+  font-variation-settings: 'wght' 650 !important;
+  line-height: 1.24 !important;
+  letter-spacing: -0.025em !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(p, li, .hero-description, .section-description, .feature-description, .card-text, .plan-subcopy) {
+  font-family: var(--hq-font-sans) !important;
+  line-height: 1.62 !important;
+  letter-spacing: var(--hq-body-tracking) !important;
+}
+
+html body #app :is(
+  .landing-page,
+  .pricing-page,
+  .contact-page,
+  .faq-page,
+  .brand-page,
+  .logos-page,
+  .tos-page,
+  .nf-page,
+  .login-wrapper,
+  .signup-wrapper
+) :is(.hero-eyebrow, .eyebrow, .section-kicker, .dashcole-section-kicker, .pricing-kicker, .overline) {
+  font-family: var(--hq-font-sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  font-variation-settings: 'wght' 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.085em !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 768px) {
+  html body #app :is(
+    .landing-page,
+    .pricing-page,
+    .contact-page,
+    .faq-page,
+    .brand-page,
+    .logos-page,
+    .tos-page,
+    .nf-page,
+    .login-wrapper,
+    .signup-wrapper
+  ) :is(h1, .hero-title, .pricing-title, .faq-title, .contact-title, .nf-title) {
+    line-height: 1.06 !important;
+    letter-spacing: -0.042em !important;
+  }
+}
+/* Fashion footer CTA: keep the final contact action in its page accent. */
+html body #app .landing-page.ecommerce-page > section.cta-section .fashion-bottom-contact {
+  border-color: #5e1e38 !important;
+  background: #6d2541 !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(109, 37, 65, 0.28) !important;
+}
+
+html body #app .landing-page.ecommerce-page > section.cta-section .fashion-bottom-contact:hover {
+  border-color: #4f182f !important;
+  background: #561b34 !important;
+  color: #ffffff !important;
+  box-shadow: 0 13px 28px rgba(86, 27, 52, 0.34) !important;
+}
+
+html body #app .landing-page.ecommerce-page > section.cta-section .fashion-bottom-contact *,
+html body #app .landing-page.ecommerce-page > section.cta-section .fashion-bottom-contact svg,
+html body #app .landing-page.ecommerce-page > section.cta-section .fashion-bottom-contact svg * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Remove the oversized spacer immediately above Fashion discovery. */
+html body #app .landing-page.ecommerce-page > section.fashion-offer-section {
+  padding-bottom: 0 !important;
+}
+
+/* Keep the final Fashion CTA compact and slightly deeper than the page canvas. */
+html body #app .landing-page.ecommerce-page > section.fashion-final-cta {
+  padding: 1.75rem 0 1.5rem !important;
+  background: #eadbd0 !important;
+}
+
+html body #app .landing-page.ecommerce-page > section.fashion-final-cta .cta-container {
+  padding: 1.15rem clamp(1.25rem, 3vw, 2.25rem) !important;
+}

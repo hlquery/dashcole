@@ -1,0 +1,1065 @@
+/* Global usability pass: consistent, accessible, stable interactions */
+
+:root {
+  --ux-focus: #2563eb;
+  --ux-focus-ring: rgba(37, 99, 235, 0.24);
+  --ux-error: #dc2626;
+  --ux-success: #059669;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.75);
+  color: #ffffff;
+}
+
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 88px;
+}
+
+body {
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  overflow-anchor: auto;
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+/* Use native browser scrollbars (do not override Chrome defaults). */
+
+html,
+#app {
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+/* Prevent accidental horizontal scroll from oversized visual blocks */
+#app,
+.landing-page-wrapper,
+.saas-page-wrapper,
+.fin-light-wrap,
+.landing-page,
+.saas-page,
+.fin-light-page {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+/* Better readability defaults */
+p,
+li,
+.section-description,
+.hero-description,
+.cta-sub {
+  line-height: 1.6;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+small {
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.15;
+}
+
+/* Stable media sizing */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+iframe {
+  max-width: 100%;
+}
+
+/* Code/content blocks should not break layout */
+pre,
+code,
+kbd,
+samp {
+  max-width: 100%;
+}
+
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Clear keyboard focus on all interactive controls */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:focus-visible,
+.summary:focus-visible,
+summary:focus-visible,
+.v-btn:focus-visible,
+.v-field:focus-within,
+.v-input input:focus-visible,
+.v-select__selection:focus-visible {
+  outline: 2px solid var(--ux-focus) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--ux-focus-ring) !important;
+  border-radius: 8px;
+}
+
+/* Make hash-link targets visually clear when navigated */
+:target {
+  scroll-margin-top: 88px;
+}
+
+/* Don't show keyboard ring on mouse click */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Better link affordance for keyboard users */
+a:focus-visible {
+  text-decoration: underline !important;
+}
+
+/* Clear pointer semantics */
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']) {
+  cursor: pointer;
+}
+
+summary {
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  cursor: pointer;
+}
+
+/* Improve tap targets */
+button,
+.nav-link,
+.dropdown-link,
+.signin-link,
+.signup-btn,
+.btn-primary,
+.btn-secondary,
+.cta-primary,
+.cta-secondary {
+  min-height: 40px;
+}
+
+/* Form usability */
+input,
+textarea,
+select {
+  min-height: 42px;
+  max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+button {
+  line-height: 1.2;
+}
+
+fieldset,
+legend {
+  min-width: 0;
+  max-width: 100%;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  min-height: auto;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #2563eb;
+}
+
+label[for] {
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button,
+[role='button'] {
+  user-select: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
+/* Consistent validation affordance */
+input[aria-invalid='true'],
+textarea[aria-invalid='true'],
+select[aria-invalid='true'],
+.invalid-input {
+  border-color: var(--ux-error) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.14) !important;
+}
+
+.input-error,
+.field-error,
+[role='alert'].error {
+  color: var(--ux-error) !important;
+}
+
+/* Improve browser autofill legibility */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #0f172a;
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Avoid zoom jumps on iOS for form controls */
+@media (max-width: 900px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Keep sticky header from overlapping anchor jumps */
+section,
+[id] {
+  scroll-margin-top: 88px;
+}
+
+/* Remove nested vertical scroll on marketing/product pages */
+.landing-page-wrapper .analytics-main,
+.landing-page-wrapper .accounting-table-body,
+.landing-page-wrapper .preview-content,
+.landing-page-wrapper .preview-main {
+  overflow-y: visible !important;
+  max-height: none !important;
+}
+
+/* Generic table safety on narrow viewports */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+th {
+  text-align: left;
+}
+
+.table-wrap,
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Utility class for hidden-but-accessible labels/text */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.container,
+.content,
+.content-wrapper {
+  min-width: 0;
+}
+
+th,
+td {
+  vertical-align: top;
+  word-break: break-word;
+}
+
+/* Prevent oversized fixed-width blocks from breaking layout */
+.card,
+.feature-card,
+.dashboard-preview,
+.api-terminal-card,
+.search-card,
+.fin-light-panel,
+.dropdown-menu,
+.modal,
+.dialog,
+.v-card {
+  max-width: 100%;
+}
+
+/* Prevent dropdown/popup clipping on narrow screens */
+.dropdown-menu,
+.menu,
+.popover,
+.tooltip {
+  max-width: min(96vw, 680px);
+}
+
+/* Stable interaction behavior */
+button,
+input[type='button'],
+input[type='submit'],
+input[type='reset'],
+.nav-link,
+.dropdown-link {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.18);
+}
+
+/* Disabled states are clearly non-interactive */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
+[aria-disabled='true'] {
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* Improve text legibility in generated/content-heavy pages */
+ul,
+ol {
+  padding-left: 1.15rem;
+}
+
+li + li {
+  margin-top: 0.2rem;
+}
+
+/* Improve hover intent: only hover styles on devices that support hover */
+@media (hover: none) {
+  .nav-link:hover,
+  .dropdown-link:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .cta-primary:hover,
+  .cta-secondary:hover,
+  .signup-btn:hover,
+  .signin-link:hover {
+    transform: none !important;
+  }
+}
+
+/* Long technical strings should not break layout */
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.link-text,
+.section-description,
+.hero-description {
+  overflow-wrap: anywhere;
+}
+
+a,
+button,
+[role='button'] {
+  text-underline-offset: 2px;
+}
+
+/* Better readability for long-form/content pages */
+main a:not(.btn-primary):not(.btn-secondary):not(.cta-primary):not(.cta-secondary):not(.signup-btn):not(.signin-link) {
+  text-decoration-thickness: 1px;
+}
+
+/* Dialogs/modals should remain usable on small screens */
+[role='dialog'],
+.modal,
+.dialog,
+.v-dialog,
+.v-overlay__content {
+  max-height: min(90vh, 900px);
+}
+
+.modal-body,
+.dialog-body,
+.v-card-text {
+  overflow-y: auto;
+}
+
+/* Keep embedded content inside card/dialog bounds */
+.v-card-text img,
+.v-card-text video,
+.v-card-text iframe,
+.dialog-body img,
+.dialog-body video,
+.dialog-body iframe {
+  max-width: 100%;
+}
+
+.v-overlay__content {
+  max-width: calc(100vw - 1rem);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate__animated,
+  [class*='animate__'],
+  .typed-cursor {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast accessibility support */
+@media (prefers-contrast: more) {
+  :root {
+    --ux-focus: #0b3dd9;
+    --ux-focus-ring: rgba(11, 61, 217, 0.32);
+  }
+
+  .btn-primary,
+  .cta-primary,
+  .signup-btn {
+    border-width: 2px !important;
+  }
+
+  .feature-card,
+  .dashboard-preview,
+  .api-terminal-card,
+  .search-card,
+  .fin-light-panel {
+    border-width: 2px !important;
+  }
+}
+
+/* Mobile polish */
+@media (max-width: 900px) {
+  .header .nav,
+  .header .nav-container {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .hero-container,
+  .saas-hero-grid,
+  .fin-light-hero-grid,
+  .global-data-container,
+  .cta-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .dashboard-preview,
+  .api-terminal-card,
+  .search-card,
+  .fin-light-panel,
+  .feature-card,
+  .saas-feature-card,
+  .fin-light-platform-grid article,
+  .fin-light-caps-grid article {
+    border-radius: 14px !important;
+  }
+
+  .dropdown-menu,
+  .menu,
+  .popover {
+    left: 0 !important;
+    right: auto !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+
+  button,
+  .nav-link,
+  .dropdown-link,
+  .signin-link,
+  .signup-btn,
+  .btn-primary,
+  .btn-secondary,
+  .cta-primary,
+  .cta-secondary {
+    min-height: 44px;
+  }
+
+  /* prevent accidental zoom/scroll jumps in inputs on iOS Safari */
+  input,
+  textarea,
+  select,
+  button {
+    transform: translateZ(0);
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-padding-top: 78px;
+  }
+
+  section,
+  [id] {
+    scroll-margin-top: 78px;
+  }
+
+  /* tighter but readable text rhythm on very small devices */
+  p,
+  li,
+  .section-description,
+  .hero-description,
+  .cta-sub {
+    line-height: 1.55;
+  }
+}
+
+/* Shared product/solution panel polish */
+.payment-methods-grid {
+  align-items: stretch;
+}
+
+.payment-method {
+  min-height: 44px;
+}
+
+.country-selector-stripe {
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.country-tab {
+  min-height: 42px;
+  white-space: nowrap;
+}
+
+.mini-api-search {
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+.mini-api-search-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mini-api-search-btn {
+  min-height: 40px;
+  padding-inline: 0.85rem;
+}
+
+.accounting-track-card {
+  overflow: hidden;
+}
+
+.accounting-track-body {
+  min-width: 0;
+}
+
+.accounting-summary {
+  gap: 0.5rem;
+}
+
+.summary-item {
+  min-width: 0;
+}
+
+.summary-value {
+  overflow-wrap: anywhere;
+}
+
+.category-badge {
+  font-weight: 700;
+}
+
+.category-badge.success {
+  color: #065f46 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  border: 1px solid rgba(16, 185, 129, 0.32) !important;
+}
+
+.category-badge.issue {
+  color: #991b1b !important;
+  background: rgba(239, 68, 68, 0.14) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.accounting-table {
+  overflow-x: auto;
+}
+
+.accounting-table-header,
+.accounting-table-row {
+  min-width: 680px;
+}
+
+.table-col-description {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .payment-methods-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .accounting-track-card {
+    border-radius: 14px !important;
+  }
+
+  .accounting-track-body {
+    gap: 10px !important;
+  }
+
+  .accounting-view-all {
+    width: 100% !important;
+    margin-top: 10px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .payment-methods-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .country-selector-stripe {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .country-tab {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.85rem;
+    padding-inline: 0.6rem;
+  }
+
+  .mini-api-search {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  .mini-api-search-icon {
+    display: none;
+  }
+
+  .mini-api-search-text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .accounting-summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .accounting-table-header,
+  .accounting-table-row {
+    min-width: 560px;
+  }
+}
+
+/* Coarse pointer ergonomics (touch devices) */
+@media (pointer: coarse) {
+  button,
+  .nav-link,
+  .dropdown-link,
+  .signin-link,
+  .signup-btn,
+  .btn-primary,
+  .btn-secondary,
+  .cta-primary,
+  .cta-secondary,
+  input,
+  select {
+    min-height: 46px;
+  }
+}
+
+/* Safer mobile viewport height handling on auth/contact pages */
+@supports (height: 100dvh) {
+  .login-wrapper,
+  .signup-wrapper,
+  .contact-page {
+    min-height: 100dvh !important;
+    height: auto !important;
+  }
+}
+
+/* Auth/contact layout safety (avoid forced viewport traps) */
+.login-wrapper,
+.signup-wrapper,
+.contact-page {
+  min-height: 100vh !important;
+  height: auto !important;
+}
+
+.login-content,
+.signup-content,
+.contact-page .container,
+.contact-page .contact-container {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Global CTA normalization: simpler buttons + tighter section spacing */
+.landing-page > section.cta-section,
+.saas-page > section.cta-section,
+.fin-light-page > section.cta-section,
+section.cta-section {
+  margin-top: -1.6rem !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.landing-page > section.cta-section::before,
+.landing-page > section.cta-section::after,
+.saas-page > section.cta-section::before,
+.saas-page > section.cta-section::after,
+.fin-light-page > section.cta-section::before,
+.fin-light-page > section.cta-section::after,
+section.cta-section::before,
+section.cta-section::after {
+  filter: none !important;
+  opacity: 0.45 !important;
+}
+
+.landing-page > section.cta-section .cta-container,
+.saas-page > section.cta-section .cta-container,
+.fin-light-page > section.cta-section .cta-container,
+section.cta-section .cta-container {
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.landing-page > section.cta-section .cta-container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.landing-page > section.cta-section .cta-primary,
+.landing-page > section.cta-section .cta-secondary,
+.saas-page > section.cta-section .cta-primary,
+.saas-page > section.cta-section .cta-secondary,
+.fin-light-page > section.cta-section .cta-primary,
+.fin-light-page > section.cta-section .cta-secondary,
+section.cta-section .cta-primary,
+section.cta-section .cta-secondary {
+  box-shadow: none !important;
+  transform: none !important;
+  backdrop-filter: none !important;
+  border-radius: 10px !important;
+  min-height: 42px !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+.landing-page > section.cta-section .cta-primary,
+.saas-page > section.cta-section .cta-primary,
+.fin-light-page > section.cta-section .cta-primary,
+section.cta-section .cta-primary {
+  background: #2563eb !important;
+  border: 1px solid #2563eb !important;
+  color: #ffffff !important;
+}
+
+.landing-page > section.cta-section .cta-primary:hover,
+.saas-page > section.cta-section .cta-primary:hover,
+.fin-light-page > section.cta-section .cta-primary:hover,
+section.cta-section .cta-primary:hover {
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
+}
+
+.landing-page > section.cta-section .cta-secondary,
+.saas-page > section.cta-section .cta-secondary,
+.fin-light-page > section.cta-section .cta-secondary,
+section.cta-section .cta-secondary {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(148, 163, 184, 0.55) !important;
+  color: #0f172a !important;
+}
+
+.landing-page > section.cta-section .cta-secondary:hover,
+.saas-page > section.cta-section .cta-secondary:hover,
+.fin-light-page > section.cta-section .cta-secondary:hover,
+section.cta-section .cta-secondary:hover {
+  background: #ffffff !important;
+  border-color: rgba(100, 116, 139, 0.7) !important;
+}
+
+.landing-page > section.cta-section .cta-primary .btn-chevron,
+.landing-page > section.cta-section .cta-secondary .btn-chevron,
+.saas-page > section.cta-section .cta-primary .btn-chevron,
+.saas-page > section.cta-section .cta-secondary .btn-chevron,
+.fin-light-page > section.cta-section .cta-primary .btn-chevron,
+.fin-light-page > section.cta-section .cta-secondary .btn-chevron,
+section.cta-section .cta-primary .btn-chevron,
+section.cta-section .cta-secondary .btn-chevron {
+  transform: none !important;
+}
+
+@media (max-width: 900px) {
+  .landing-page > section.cta-section,
+  .saas-page > section.cta-section,
+  .fin-light-page > section.cta-section,
+  section.cta-section {
+    margin-bottom: 2rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+}
+
+/* Final consistency pass for repeated landing-style sections across products/solutions */
+.landing-page .country-tab.active,
+.landing-page .country-tab.active:hover,
+.saas-page .country-tab.active,
+.saas-page .country-tab.active:hover,
+.fin-light-page .country-tab.active,
+.fin-light-page .country-tab.active:hover {
+  color: #ffffff !important;
+}
+
+.landing-page .country-tab.active *,
+.saas-page .country-tab.active *,
+.fin-light-page .country-tab.active * {
+  color: #ffffff !important;
+}
+
+.landing-page > section.cta-section .cta-right,
+.saas-page > section.cta-section .cta-right,
+.fin-light-page > section.cta-section .cta-right {
+  border-left: none !important;
+  padding-left: clamp(1.2rem, 2.8vw, 2rem) !important;
+}
+
+.landing-page > section.cta-section .cta-promo-column,
+.saas-page > section.cta-section .cta-promo-column,
+.fin-light-page > section.cta-section .cta-promo-column {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.landing-page > section.cta-section,
+.saas-page > section.cta-section,
+.fin-light-page > section.cta-section {
+  margin-top: -1.6rem !important;
+}
+
+.landing-page > section.cta-section {
+  border-radius: 0 !important;
+}
+
+.landing-page .accounting-track-body,
+.saas-page .accounting-track-body,
+.fin-light-page .accounting-track-body {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.landing-page .accounting-view-all,
+.saas-page .accounting-view-all,
+.fin-light-page .accounting-view-all {
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+  min-height: 44px !important;
+  line-height: 1.2 !important;
+  align-self: stretch !important;
+  overflow: hidden !important;
+}
+
+.elegant-header-cell[role='button'],
+.clickable[role='button'],
+.server-banner-content[role='button'],
+.chart-container[role='button'] {
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .landing-page .hero-actions,
+  .saas-page .hero-actions,
+  .fin-light-page .hero-actions,
+  .landing-page .cta-actions,
+  .saas-page .cta-actions,
+  .fin-light-page .cta-actions {
+    width: 100%;
+    justify-content: stretch !important;
+  }
+
+  .landing-page .hero-actions > a,
+  .landing-page .hero-actions > .btn-primary,
+  .landing-page .hero-actions > .btn-secondary,
+  .saas-page .hero-actions > a,
+  .fin-light-page .hero-actions > a,
+  .landing-page .cta-actions > a,
+  .saas-page .cta-actions > a,
+  .fin-light-page .cta-actions > a {
+    flex: 1 1 240px;
+    justify-content: center;
+  }
+}
+
+/* Global typography hierarchy: two primary weights, larger headings, readable body copy */
+:root {
+  --type-weight-body: 500;
+  --type-weight-heading: 700;
+  --type-body-size: clamp(1rem, 0.22vw + 0.97rem, 1.08rem);
+  --type-body-line: 1.68;
+  --type-lead-size: clamp(1.08rem, 0.42vw + 1rem, 1.24rem);
+  --type-card-title-size: clamp(1.16rem, 0.42vw + 1.05rem, 1.36rem);
+  --type-section-title-size: clamp(2.35rem, 4.35vw, 3.25rem);
+}
+
+body,
+#app,
+.landing-page-wrapper,
+.landing-page,
+.saas-page-wrapper,
+.saas-page,
+.fin-light-wrap,
+.fin-light-page {
+  font-weight: var(--type-weight-body) !important;
+  font-variation-settings: 'wght' var(--type-weight-body) !important;
+}
+
+.landing-page :where(p, li),
+.saas-page :where(p, li),
+.fin-light-page :where(p, li),
+.landing-page-wrapper :where(.section-description, .hero-description, .global-data-subtitle, .global-data-description, .cta-sub),
+.saas-page-wrapper :where(.section-description, .hero-description, .global-data-subtitle, .global-data-description, .cta-sub),
+.fin-light-wrap :where(.section-description, .hero-description, .global-data-subtitle, .global-data-description, .cta-sub) {
+  font-size: var(--type-body-size) !important;
+  line-height: var(--type-body-line) !important;
+  font-weight: var(--type-weight-body) !important;
+}
+
+.landing-page-wrapper :where(.hero-description, .section-description, .global-data-subtitle, .cta-sub),
+.saas-page-wrapper :where(.hero-description, .section-description, .global-data-subtitle, .cta-sub),
+.fin-light-wrap :where(.hero-description, .section-description, .global-data-subtitle, .cta-sub) {
+  font-size: var(--type-lead-size) !important;
+}
+
+.landing-page-wrapper :where(h1, h2, h3, h4, .hero-title, .section-title, .global-data-title, .cta-title),
+.saas-page-wrapper :where(h1, h2, h3, h4, .hero-title, .section-title, .global-data-title, .cta-title),
+.fin-light-wrap :where(h1, h2, h3, h4, .hero-title, .section-title, .global-data-title, .cta-title) {
+  font-weight: var(--type-weight-heading) !important;
+  font-variation-settings: 'wght' var(--type-weight-heading) !important;
+  letter-spacing: 0 !important;
+}
+
+.landing-page-wrapper :where(.section-title, .global-data-title, .cta-title, .finance-included-title, .finance-partners-title),
+.saas-page-wrapper :where(.section-title, .global-data-title, .cta-title),
+.fin-light-wrap :where(.section-title, .global-data-title, .cta-title) {
+  font-size: var(--type-section-title-size) !important;
+  line-height: 1.08 !important;
+}
+
+.landing-page-wrapper :where(.feature-title, .finance-included-card-title, .stripe-feature-title, .commerce-text-item h3, .offer-item h3, .cta-promo-title),
+.saas-page-wrapper :where(.feature-title, .stripe-feature-title, .commerce-text-item h3, .offer-item h3, .cta-promo-title),
+.fin-light-wrap :where(.feature-title, .stripe-feature-title, .commerce-text-item h3, .offer-item h3, .cta-promo-title) {
+  font-size: var(--type-card-title-size) !important;
+  line-height: 1.22 !important;
+  font-weight: var(--type-weight-heading) !important;
+}
+
+.landing-page-wrapper :where(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary, button, .badge, .eyebrow, [class*='eyebrow'], [class*='badge'], [class*='label']),
+.saas-page-wrapper :where(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary, button, .badge, .eyebrow, [class*='eyebrow'], [class*='badge'], [class*='label']),
+.fin-light-wrap :where(.btn-primary, .btn-secondary, .cta-primary, .cta-secondary, button, .badge, .eyebrow, [class*='eyebrow'], [class*='badge'], [class*='label']) {
+  font-weight: var(--type-weight-heading) !important;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --type-body-size: 1rem;
+    --type-lead-size: 1.05rem;
+    --type-section-title-size: clamp(2rem, 8vw, 2.55rem);
+  }
+}
+
+/* Mobile heroes are intentionally copy-only across every landing, product, and solution page. */
+@media (max-width: 768px) {
+  body #app :is(.landing-page-wrapper, .saas-page-wrapper, .fin-light-wrap)
+    :is(.landing-page, .saas-page, .fin-light-page)
+    > section.hero-section
+    .hero-visual,
+  body #app :is(.landing-page-wrapper, .saas-page-wrapper, .fin-light-wrap)
+    :is(.landing-page, .saas-page, .fin-light-page)
+    > section.hero-section
+    .vertical-divider {
+    display: none !important;
+  }
+
+  body #app :is(.landing-page-wrapper, .saas-page-wrapper, .fin-light-wrap)
+    :is(.landing-page, .saas-page, .fin-light-page)
+    > section.hero-section
+    .hero-container {
+    width: min(100% - 2rem, 680px) !important;
+    max-width: 680px !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  body #app :is(.landing-page-wrapper, .saas-page-wrapper, .fin-light-wrap)
+    :is(.landing-page, .saas-page, .fin-light-page)
+    > section.hero-section
+    .hero-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-column: 1 !important;
+    justify-self: stretch !important;
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

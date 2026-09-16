@@ -1,0 +1,429 @@
+/* Common authentication styles */
+
+.login-wrapper,
+.signup-wrapper,
+.auth-container,
+.auth-card {
+  --font-family-sohne: 'sohne-var', 'Sohne', 'Söhne', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-family-sohne) !important;
+}
+
+/* Maximum antialiasing for all auth elements */
+.auth-container,
+.auth-container *,
+.auth-container *::before,
+.auth-container *::after,
+.auth-card,
+.auth-card *,
+.auth-card *::before,
+.auth-card *::after {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Brand styling */
+.brand-top {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1000;
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-stripe-title);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  font-family: var(--font-family-sohne);
+  transition: color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.brand-top:hover {
+  color: var(--color-stripe-title);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Welcome text */
+.welcome {
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-stripe-title);
+  margin-bottom: 2rem;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.02em;
+}
+
+/* Form styling */
+form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-stripe-title);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Input container */
+.input-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 1rem;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.input-with-icon {
+  padding-left: 2.5rem !important;
+}
+
+.password-input-container {
+  position: relative;
+}
+
+.password-input {
+  padding-right: 2.5rem !important;
+}
+
+/* Input styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: var(--font-size-base);
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #0f172a;
+  caret-color: #0f172a;
+  font-family: var(--font-family-sohne) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+input.invalid-input {
+  border-color: #ef4444;
+  background: #fef2f2;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+input::placeholder {
+  color: #64748b;
+  opacity: 1;
+  font-family: var(--font-family-sohne) !important;
+}
+
+.input-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Password visibility toggle */
+.password-eye-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 1.1rem;
+  z-index: 10;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.password-eye-icon:hover {
+  color: #374151;
+}
+
+.password-eye-icon:focus {
+  outline: none;
+  color: #2563eb;
+}
+
+/* Options row */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.options-row-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-stripe-text);
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  accent-color: #2563eb;
+}
+
+.forgot-password {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Button styling */
+.auth-btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+.auth-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  transform: translateY(-1px);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Bottom card */
+.bottom-fixed-card {
+  background: #f8fafc;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+  font-size: var(--font-size-base);
+  color: var(--color-stripe-text);
+}
+
+.link-btn {
+  color: #2563eb;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link-btn:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+/* Card styling */
+.login-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.card-inner {
+  padding: 2rem;
+}
+
+/* Language selector */
+.login-flag-topright {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 30;
+}
+
+.flag-btn-topright {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.flag-btn-topright:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.flag-dropdown-topright {
+  position: absolute;
+  top: 3rem;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  min-width: 200px;
+  z-index: 31;
+}
+
+.flag-menu-items {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.flag-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.flag-item:hover {
+  background-color: #f3f4f6;
+}
+
+.language-flag {
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+}
+
+.language-name {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.flag-check {
+  color: #2563eb;
+  font-size: 0.8rem;
+}
+
+/* Snackbar */
+.snackbar {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #ef4444;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+  z-index: 9999;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  max-width: 400px;
+}
+
+.snackbar.snackbar-show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.snackbar-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.snackbar-icon {
+  font-size: 1.1rem;
+}
+
+.snackbar-message {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .brand-top {
+    font-size: 1.25rem;
+    top: 1rem;
+    left: 1rem;
+  }
+  
+  .welcome {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-inner {
+    padding: 1.5rem;
+  }
+  
+  .login-flag-topright {
+    top: 1rem;
+    right: 1rem;
+  }
+  
+  .snackbar {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    transform: translateY(100%);
+  }
+  
+  .snackbar.snackbar-show {
+    transform: translateY(0);
+  }
+}

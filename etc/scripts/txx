@@ -1,0 +1,150 @@
+#!/usr/bin/env node
+/**
+ * Auto-fit text onto the left side of an image.
+ * Usage:
+ *   ./txx "Your text here" [input.png] [output.png]
+ * 
+ * Examples:
+ *   ./txx "Main text"
+ *   ./txx "Main text" "tw.png"
+ *   ./txx "Main text" "tw.png" "tw_out.png"
+ */
+
+const fs = require("fs");
+const { createCanvas, loadImage } = require("canvas");
+const { exec } = require("child_process");
+
+const TEXT   = process.argv[2] || "";
+const INPUT  = process.argv[3] || "tw.png";
+const OUTPUT = process.argv[4] || "tw_out.png";
+
+if (!TEXT) {
+  console.error("❌ Provide text as first argument.");
+  process.exit(1);
+}
+
+// ---- Layout knobs ----
+const MAIN_TEXT_X = 66;    // px from left edge for main text, aligned with logo
+const TOP_PAD     = 286;   // px from top (fixed y position)
+const RIGHT_GUARD = 0.40;  // reserve right 40% for artwork (much more horizontal space for text)
+const BOTTOM_PAD  = 80;    // px bottom margin
+const START_PT    = 68;    // initial font size (smaller but more extended horizontally)
+const MIN_PT      = 28;    // minimum font size
+const FONT_FAMILY = "Noto Sans"; // sober sans font available on the target system
+const COLOR       = "#FFFFFF";
+const LINE_HEIGHT = 1.15;  // line-height multiplier
+const V_CENTER    = false;  // center text vertically in box
+const HLQUERY_TEXT = "hlquery"; // text to add next to logo
+const HLQUERY_FONT_SIZE = 64; // font size for "hlquery" text (larger for better visibility next to the logo)
+const HLQUERY_X_OFFSET = 196; // x position from left edge (aligned at 166)
+const HLQUERY_Y = 128; // y position from top
+
+(async () => {
+  if (!fs.existsSync(INPUT)) {
+    console.error(`❌ Input not found: ${INPUT}`);
+    process.exit(1);
+  }
+
+  const img = await loadImage(INPUT);
+  const W = img.width, H = img.height;
+
+  const BOX_W = Math.round(W * (1 - RIGHT_GUARD));
+  const BOX_H = H - TOP_PAD - BOTTOM_PAD;
+  if (BOX_W < 50 || BOX_H < 50) {
+    console.error("❌ Text box too small. Adjust RIGHT_GUARD or pads.");
+    process.exit(1);
+  }
+
+  const measureCanvas = createCanvas(1, 1);
+  const mctx = measureCanvas.getContext("2d");
+
+  const wrapLines = (text, maxWidth, fontPx) => {
+    mctx.font = `bold ${fontPx}px "${FONT_FAMILY}"`;
+    const words = text.split(/\s+/);
+    const lines = [];
+    let line = "";
+    for (const w of words) {
+      const test = line ? line + " " + w : w;
+      const width = mctx.measureText(test).width;
+      if (width <= maxWidth) {
+        line = test;
+      } else {
+        if (line) lines.push(line);
+        line = w;
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
+  };
+
+  const fits = (fontPx) => {
+    const lines = wrapLines(TEXT, BOX_W, fontPx);
+    const linePx = Math.round(fontPx * LINE_HEIGHT);
+    const totalH = lines.length * linePx;
+    const maxW = Math.max(...lines.map(l => mctx.measureText(l).width), 0);
+    return { ok: totalH <= BOX_H && maxW <= BOX_W, lines, totalH, linePx, maxW };
+  };
+
+  // Binary search largest fitting font
+  let lo = MIN_PT, hi = START_PT, best = null;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    const res = fits(mid);
+    if (res.ok) { best = { font: mid, ...res }; lo = mid + 1; }
+    else { hi = mid - 1; }
+  }
+  if (!best) {
+    console.error(`❌ Text won't fit even at ${MIN_PT}px. Enlarge box.`);
+    process.exit(1);
+  }
+
+  // Compose final image
+  const canvas = createCanvas(W, H);
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+
+  ctx.fillStyle = COLOR;
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+  ctx.font = `bold ${best.font}px "${FONT_FAMILY}"`;
+
+  // Text aligned to the left at fixed position
+  let y = TOP_PAD;
+  // Note: V_CENTER is disabled to maintain fixed starting position
+
+  for (const line of best.lines) {
+    ctx.fillText(line, MAIN_TEXT_X, y);
+    y += best.linePx;
+  }
+
+  // Draw "hlquery" text next to logo on left side (pegadito al logo blanco superior izquierdo)
+  // Position it on the left side, next to the white logo - properly aligned
+  ctx.font = `bold ${HLQUERY_FONT_SIZE}px "${FONT_FAMILY}"`; // increased font size for better visibility
+  ctx.fillStyle = COLOR; // white text
+  ctx.textBaseline = "top"; // Use top baseline for consistent alignment
+  ctx.textAlign = "left"; // Left align for consistent horizontal positioning
+  const hlqueryX = HLQUERY_X_OFFSET; // position from left edge, next to logo
+  const hlqueryY = HLQUERY_Y; // y position aligned with logo
+  ctx.fillText(HLQUERY_TEXT, hlqueryX, hlqueryY); // aligned with logo on left side
+
+  const out = fs.createWriteStream(OUTPUT);
+  const stream = canvas.createPNGStream();
+  stream.pipe(out);
+
+  out.on("finish", () => {
+    console.log(` Saved: ${OUTPUT}`);
+    console.log(`   Box ${BOX_W}x${BOX_H} at (+${MAIN_TEXT_X}, +${y})`);
+    console.log(`   Font ${best.font}px; lines=${best.lines.length}`);
+    console.log(`   "${HLQUERY_TEXT}" text at (${hlqueryX}, ${hlqueryY}) - aligned with logo, size ${HLQUERY_FONT_SIZE}px`);
+
+    // cross-platform auto-open
+    let cmd;
+    if (process.platform === "darwin") cmd = `open "${OUTPUT}"`;
+    else if (process.platform === "win32") cmd = `start "" "${OUTPUT}"`;
+    else cmd = `xdg-open "${OUTPUT}"`;
+
+    exec(cmd, (err) => {
+      if (err) console.error("Failed to open image:", err.message);
+    });
+  });
+})();

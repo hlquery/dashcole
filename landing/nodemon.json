@@ -1,0 +1,22 @@
+{
+  "watch": [
+    "src",
+    "public",
+    "*.config.js",
+    "*.json"
+  ],
+  "ext": "js,vue,ts,json,css,scss",
+  "ignore": [
+    "node_modules/",
+    "dist/",
+    "*.log",
+    "public/search-index.json",
+    "public/*.json"
+  ],
+  "exec": "npm run dev",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 1000
+}
+

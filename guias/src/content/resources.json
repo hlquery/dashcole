@@ -1,0 +1,30 @@
+[
+  {
+    "category": "Instalación",
+    "title": "Entorno local con x2, x3 y x4",
+    "summary": "Arranque diario, reinicio limpio de base y sembrado completo con datos demo.",
+    "href": "/installation/entorno-local-x2-x3-x4",
+    "accent": "blue"
+  },
+  {
+    "category": "Instalación",
+    "title": "Configurar el archivo .env",
+    "summary": "MySQL, Redis, SMTP, respaldos y variables multi-tenant.",
+    "href": "/installation/configurar-entorno",
+    "accent": "blue"
+  },
+  {
+    "category": "Despliegue",
+    "title": "Desplegar a producción",
+    "summary": "Nginx, sync2, PM2 y verificación de /api/health.",
+    "href": "/deployment/desplegar-produccion",
+    "accent": "navy"
+  },
+  {
+    "category": "Administración",
+    "title": "Cuentas, roles y permisos",
+    "summary": "Director, manager, profesores, flags y sesiones Bearer.",
+    "href": "/administration/cuentas-roles-y-permisos",
+    "accent": "purple"
+  }
+]

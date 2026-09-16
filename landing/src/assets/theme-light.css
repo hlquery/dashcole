@@ -1,0 +1,131 @@
+/* Light Theme Styles */
+:root,
+[data-theme="light"],
+:root:not(.dark-mode) {
+  /* Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  
+  /* Dashboard specific */
+  --dashboard-bg: #f9fafb;
+  --card-bg: #ffffff;
+  --card-border: rgba(226, 232, 240, 0.6);
+  --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  
+  /* Header */
+  --header-bg: #ffffff;
+  --header-border: rgba(226, 232, 240, 0.8);
+  
+  /* Sidebar (always dark, but defined for consistency) */
+  --sidebar-bg: #1c2930;
+  --sidebar-text: #e5e7eb;
+  --sidebar-hover: rgba(255, 255, 255, 0.1);
+  
+  /* Inputs */
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --input-focus-border: #3b82f6;
+  --input-focus-shadow: rgba(59, 130, 246, 0.1);
+  
+  /* Buttons */
+  --btn-primary-bg: #3b82f6;
+  --btn-primary-hover: #2563eb;
+  --btn-secondary-bg: #f3f4f6;
+  --btn-secondary-hover: #e5e7eb;
+  
+  /* Status colors */
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+}
+
+/* Apply light theme styles */
+body,
+.v-application {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  /* Maximum antialiasing */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.dashboard-main {
+  background-color: var(--dashboard-bg) !important;
+}
+
+.v-card {
+  background-color: var(--card-bg) !important;
+  border-color: var(--card-border) !important;
+  color: var(--text-primary) !important;
+}
+
+.dashboard-app-bar {
+  background-color: var(--header-bg) !important;
+  border-bottom: 1px solid var(--header-border) !important;
+}
+
+/* Inputs in light mode */
+.v-text-field .v-field,
+.v-select .v-field,
+input,
+textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Buttons */
+.v-btn--variant-elevated {
+  background-color: var(--btn-primary-bg) !important;
+  color: #ffffff !important;
+}
+
+.v-btn--variant-elevated:hover {
+  background-color: var(--btn-primary-hover) !important;
+}
+
+/* Text colors */
+.text-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-tertiary {
+  color: var(--text-tertiary) !important;
+}
+
+/* Maximum antialiasing for all light mode elements */
+body *,
+body *::before,
+body *::after,
+.v-application *,
+.v-application *::before,
+.v-application *::after {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-text-stroke: 0.45px transparent !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+

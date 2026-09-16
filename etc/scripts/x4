@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd -- "${SCRIPT_DIR}/../.." && pwd)"
+
+cd "${PROJECT_DIR}"
+echo "Instalador x4 de DashCole"
+echo "Este proceso recreará la base local con usuarios y estudiantes iniciales."
+
+echo "1) Validando herramientas e instalando dependencias..."
+"${SCRIPT_DIR}/install.sh"
+
+echo "2) Creando una instalación limpia..."
+"${SCRIPT_DIR}/x3" --yes
+
+echo "3) Generando datos iniciales con Faker y Sequelize desde JavaScript..."
+(cd "${PROJECT_DIR}/api" && npm run db:seed)
+
+echo "4) Verificando que MySQL contiene los datos..."
+(cd "${PROJECT_DIR}/api" && npm run db:verify)
+
+echo
+echo "DashCole fue instalado correctamente."
+echo "Todas las cuentas usan contraseña: admin"
+echo "Plataforma: super@hlquery.com / admin"
+echo "Demo colegio: demo@hlquery.com / admin"
+echo "Director: admin@hlquery.com / admin"
+echo "Profesor: profesor@hlquery.com / admin"
+echo "Manager: manager@hlquery.com / admin"
+echo "Finanzas: finanzas@hlquery.com / admin"
+echo "Se crearon el colegio, usuarios y datos iniciales de todos los módulos."
+echo "Ejecuta ./etc/scripts/x2 para abrir el sistema."
